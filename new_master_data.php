@@ -1,0 +1,340 @@
+<?php
+//
+//==============================================
+// Author: FSI                                 =
+// Date-written = June 20, 2006                =
+// Filename: quoteDetailsEntry.php             =
+// Copyright (C) FluentSoft Inc.               =
+// Contact bmandyam@fluentsoft.com             =
+// Revision: v1.0 OWT                          =
+// Allows entry of new quotes                  =
+//==============================================
+
+session_start();
+header("Cache-control: private");
+
+if ( !isset ( $_SESSION['user'] ) )
+{
+     header ( "Location: login.php" );
+
+}
+$userid = $_SESSION['user'];
+$dept = $_SESSION['department'];
+
+$_SESSION['pagename'] = 'newmaster_data';
+$page = "Master Data";
+//////session_register('pagename');
+
+// First include the class definition
+include('classes/userClass.php');
+include('classes/companyClass.php');
+include('classes/quoteClass.php');
+include('classes/displayClass.php');
+include('classes/pageClass.php');
+
+$newlogin = new userlogin;
+$newlogin->dbconnect();
+
+$newpage = new page;
+$newQuote = new quote;
+$newdisplay = new display;
+$newCustomer = new company;
+
+if(isset($_REQUEST['quoteid']))
+	$quoteid=$_REQUEST['quoteid'];
+else
+	$quoteid='';
+if(isset($_REQUEST['quotedate']))
+	$quotedate=$_REQUEST['quotedate'];
+else
+	$quotedate='';
+if(isset($_REQUEST['company']))
+	$company=$_REQUEST['company'];
+else
+	$company='';
+if(isset($_REQUEST['companyrecnum']))
+	$companyrecnum=$_REQUEST['companyrecnum'];
+else
+	$companyrecnum='';
+if(isset($_REQUEST['desc']))
+	$desc=$_REQUEST['desc'];
+else
+	$desc='';
+if(isset($_REQUEST['delivarydate']))
+	$delivarydate=$_REQUEST['delivarydate'];
+else
+	$delivarydate='';
+
+if(isset($_REQUEST['terms']))
+	$terms=$_REQUEST['terms'];
+else
+	$terms='';
+if(isset($_REQUEST['rfqid']))
+	$rfqid=$_REQUEST['rfqid'];
+else
+	$rfqid='';
+if(isset($_REQUEST['quotetypeval']))
+	$quotetype=$_REQUEST['quotetypeval'];
+else
+	$quotetype='';
+if(isset($_FILE['excelfile']['name']))
+	$excelfile = $_FILE['excelfile']['name'];
+else
+	$excelfile ='';
+if(isset($_REQUEST['comments']))
+	$comments=$_REQUEST['comments'];
+else
+	$comments='';
+if(isset($_REQUEST['salesperson']))
+	$salesperson=$_REQUEST['salesperson'];
+else
+	$salesperson='';
+
+if(isset($_REQUEST['salespersonrecnum']))
+	$salespersonrecnum=$_REQUEST['salespersonrecnum'];
+else
+	$salesperson='';
+
+$lockstatus="Not Locked" ;
+
+?>
+
+
+<link rel="stylesheet" href="style.css">
+<script language="javascript" src="scripts/mouseover.js"></script>
+<script language="javascript" src="scripts/master_data.js"></script>
+
+
+<html>
+<head>
+<title>New Master</title>
+</head>
+
+<body leftmargin="0"topmargin="0" marginwidth="0">
+
+<?php
+include('header.html');
+?>
+<!-- <table width=100% cellspacing="0" cellpadding="6" border="0">
+	<tr>
+		<td>
+			<table width=100% border=0 cellspacing="0" cellpadding="0">
+   				<tr>
+        					<td colspan=2><span class="welcome"><b>Welcome <?php echo $userid?></b></td>
+        					<td align="right">&nbsp;
+       					<a href="exit.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image16','','images/logout_mo.gif',1)"><img name="Image16" border="0" src="images/logout.gif"></a></td>
+        				 </tr>
+			</table>
+			<table width=100% border=0 cellpadding=0 cellspacing=0  >
+				<tr><td></td></tr>
+				<tr>
+					<td>
+<?php $newdisplay->dispLinks(''); ?>
+</td></tr> -->
+<form action='processMaster_data.php' method='post' enctype='multipart/form-data'>
+<!-- <table width=100% border=0 cellpadding=0 cellspacing=0  >
+
+	<tr bgcolor="DEDFDE"><td width="6"><img src="images/spacer.gif " width="6"></td> -->
+	     		     <td bgcolor="#FFFFFF">
+				<table width=100% border=0 cellpadding=6 cellspacing=0  >
+    <tr>
+        <td><span class="pageheading"><b>New Master</b></td>
+    </tr>
+
+
+     
+<tr>
+<td>
+<table width=100% border=0 cellpadding=3 cellspacing=1 bgcolor="#DFDEDF" >
+      <tr bgcolor="#DDDEDD">
+            <td colspan=4><span class="heading"><center><b>New Master Header</b></center></td>
+        </tr>
+<table width=100% border=0 cellpadding=3 cellspacing=1 bgcolor="#DFDEDF" class="stdtable1" >
+
+        <tr bgcolor="#FFFFFF">
+            <td><span class="labeltext"><p align="left"><span class='asterisk'>*</span>PRN</p></font></td>
+            <td><span class="tabletext"><input type="text" name="CIM_refnum" size=20 value=""></td>
+             <td><span class="labeltext"><p align="left">Customer</p></font></td>
+            <td><input type="text" name="customer" size=20 value=""></td>
+        </tr>
+
+        <tr bgcolor="#FFFFFF">
+            <td><span class="labeltext"><p align="left"><span class='asterisk'>*</span>Part Name</p></font></td>
+            <td><input type="text" name="partname" size=20 value="">
+            </td>
+            <td><span class="labeltext"><p align="left">RM by Customer</p></font></td>
+            <td><input type="text" name="RM_by_customer" size=20 value=""></td>
+
+        </tr>
+        <tr bgcolor="#FFFFFF">
+            <td><span class="labeltext"><p align="left"><span class='asterisk'>*</span>Part No.</p></font></td>
+            <td><input type="text" name="partnum" size=20 value=""></td>
+            <td><span class="labeltext"><p align="left">RM by host</p></font></td>
+            <td><input type="text" name="RM_by_CIM" size=20 value=""></td>
+        </tr>
+        
+        <tr bgcolor="#FFFFFF">
+            <td><span class="labeltext"><p align="left">Secondary Part Num</p></font></td>
+            <td><input type="text" name="sec_partname" size=20 value=""></td>
+            <td><span class="labeltext"><p align="left">Attachments</p></font></td>
+            <td><input type="text" name="attachment" size=20 value=""></td>
+        </tr>
+        
+        <tr bgcolor="#FFFFFF">
+             <td><span class="labeltext"><p align="left">Drawing#</p></font></td>
+            <td><input type="text" name="drawing_num" size=20 value=""></td>
+            <td><span class="labeltext"><p align="left">DRG Issue</p></font></td>
+            <td><input type="text" name="drg_issue" size=20 value=""></td>
+        </tr>
+        
+     <tr bgcolor="#FFFFFF">
+            <td><span class="labeltext"><p align="left">RM Type</p></font></td>
+            <td><input type="text" name="rm_type" size=20 value=""></td>
+            <td><span class="labeltext"><p align="left">RM Specification</p></font></td>
+            <td><input type="text" name="rm_spec" size=20 value=""></td>
+        </tr>
+        
+        <tr bgcolor="#FFFFFF">
+            <td><span class="labeltext"><p align="left">MPS#</p></font></td>
+            <td><input type="text" name="mps_num" size=20 value=""></td>
+            <td><span class="labeltext"><p align="left">MPS Rev</p></font></td>
+            <td><input type="text" name="mps_rev" size=20 value=""></td>
+        </tr>
+        <tr bgcolor="#FFFFFF">
+            <td><span class="labeltext"><p align="left">COS</p></font></td>
+            <td><input type="text" name="cos" size=20 value=""></td>
+            <td><span class="labeltext"><p align="left">Project</p></font></td>
+            <td><input type="text" name="project" size=20 value=""></td>
+
+        </tr>
+      <tr bgcolor="#FFFFFF">
+            <td><span class="labeltext"><p align="left">Maxruling</p></font></td>
+            <td><input type="text" name="max" size=20 value=""></td>
+            <td><span class="labeltext"><p align="left">Grainflow</p></font></td>
+            <td><input type="text" name="gf" size=20 value=""></td> 
+            
+        </tr>
+        <tr bgcolor="#FFFFFF">
+            <td><span class="labeltext"><p align="left">Control(Machine Name)</p></font></td>
+            <td ><input type="text" name="machine_name" size=20 value=""></td>
+              <td><span class="labeltext"><p align="left">Rev Status</p></font></td>
+            <td><select id="master_rev_status" name="master_rev_status" >
+                   <option value="Active">Active</option>
+                   <option value="Obsolete">Obsolete</option>
+                </select>
+            </td>
+       </tr>
+       <tr bgcolor="#FFFFFF">
+        <td><span class="labeltext"><p align="left">Condition</p></font></td>
+            <td><textarea id="condition" name="condition" rows="2"
+			              style="background-color:#FFFFF;"
+			              cols="30" value=""></textarea></td>
+           <td><span class="labeltext"><p align="left">Type</p></font></td>
+          <td><input type="text" name="type" size=20  id="type" value="" style="background-color:#DDDDDD;" readonly="readonly" >
+          <select  name="typesel" id="typesel" onchange="onSelectType(this)">
+                    
+                   <option value="Assembly">Assembly</option>
+                    <option value="Non Assembly">Non Assembly</option>
+                  
+                   <option value="Kit">Kit</option></select></td>
+       </tr>
+        
+
+<tr bgcolor="#FFFFFF">
+        <td><span class="labeltext"><p align="left">Treatment</p></font></td>
+         <td colspan="1"><select id="treat" name="treat">
+                   <option value="Treated">Treated</option>
+                   <option value="Untreated">Untreated</option>
+                   <option value="Assembly">Assembly</option>
+                </select></td>
+	<td colspan="1"></td><td colspan="1"></td>
+       </tr>
+
+
+      <tr bgcolor="#FFFFFF">
+            <td rowspan=3><span class="labeltext"><p align="left">Required Unit Size of RM</p></font></td>
+            <td ><span class="labeltext"><p align="left">Dim 1</p></font></td>
+            <td colspan=2><input type="text" name="rm_dim1" size=20 value=""></td>
+        </tr>
+        <tr bgcolor="#FFFFFF">
+            <td ><span class="labeltext"><p align="left">Dim 2</p></font></td>
+            <td colspan=2><input type="text" name="rm_dim2" size=20 value=""></td>
+        </tr>
+        <tr bgcolor="#FFFFFF">
+            <td><span class="labeltext"><p align="left">Dim 3</p></font></td>
+            <td colspan=2><input type="text" name="rm_dim3" size=20 value=""></td>
+        </tr>
+
+
+</table>
+<table width=100% border=0 cellpadding=3 cellspacing=1 class="stdtable">
+  <tr bgcolor="#FFFFFF"><td colspan=5><a href="javascript:addRow('myTable',document.forms[0].index.value)"><img name="Image7" border="0" src="images/bu-addrow.gif"></a></td></tr>
+   <tr bgcolor="#DDDEDD">
+<td colspan=4><span class="heading"><center><b>MPS</b></center></td>
+</tr>
+<tr bgcolor="#FFFFFF">
+<table id="myTable" width=100% border=0 cellpadding=3 cellspacing=1 bgcolor="#DFDEDF" class="stdtable">
+<tr>
+  <thead>
+<th class="head0" bgcolor="#EEEFEE"><span class="heading"><b><center>Line number</center></b></td>
+<th class="head1" bgcolor="#EEEFEE"><span class="heading"><b><center>Mps Rev</center></b></td>
+<th class="head0" bgcolor="#EEEFEE"><span class="heading"><b><center>Rev Status</center></b></td>
+<th class="head1" bgcolor="#EEEFEE"><span class="heading"><b><center>Rev Date</center></b></td>
+<th class="head0" bgcolor="#EEEFEE"><span class="heading"><b><center>Control(Machine Name)</center></b></td>
+<th class="head1" bgcolor="#EEEFEE"><span class="heading"><b><center>Remarks</center></b></td>
+</tr>
+</thead>
+<?php
+      $i=1;
+      while ($i<=1)
+     {
+	   printf('<tr bgcolor="#FFFFFF">');
+	   $line_num="line_num" . $i;
+       $mps_revision="mps_revision" . $i;
+       $control="control" . $i;
+       $remarks="remarks" . $i;
+       $rev_status="rev_status" . $i;
+       $rev_date="rev_date".$i;
+       
+   	   echo "<td><center><span class=\"tabletext\"><input type=\"text\" id=\"$line_num\"  name=\"$line_num\"  value=\"\" size=\"8%\"><center></td>";
+       echo "<td><center><input type=\"text\" id=\"$mps_revision\" name=\"$mps_revision\" size=\"10%\" value=\"\"><center></td>";
+       // echo "<td><center><input type=\"text\" id=\"$rev_status\" name=\"$rev_status\" size=\"10%\" value=\"\"><center></td>";
+        echo"<td align=\"center\"><select id=\"$rev_status\" name=\"$rev_status\" >
+                   <option value=\"Active\">Active</option>
+                   <option value=\"Obsolete\">Obsolete</option>
+                </select>
+                 </td>";
+                 echo"<td><input type=\"text\" id=\"$rev_date\"  name=\"$rev_date\" style=\"background-color:#DDDDDD;\" readonly=\"readonly\"
+           size=\"8%\" value=\"$row->rev_date\"><img src=\"images/bu-getdateicon.gif\" alt=\"GetDate\"
+           onclick=\"GetDate('$rev_date')\"> </td>";
+       echo "<td><center><input type=\"text\" id=\"$control\" name=\"$control\" size=\"12%\" value=\"\"><center></td>";
+       echo "<td><center><input type=\"text\" id=\"$remarks\" name=\"$remarks\" size=\"50%\" value=\"\"><center></td>";
+       printf('</tr>');
+	   $i++;
+     }
+echo "<input type=\"hidden\" name=\"index\" id=\"index\" value=$i>";
+echo "<input type=\"hidden\" name=\"curindex\" id=\"curindex\" value=$i>";
+?>
+ </table>
+</td>
+
+	<!-- 	<td width="6"><img src="images/spacer.gif " width="6"></td>
+			</tr>
+			<tr bgcolor="DEDFDE">
+  				<td width="6"><img src="images/box-left-bottom.gif"></td>
+				<td><img src="images/spacer.gif " height="6"></td>
+				<td width="6"><img src="images/box-right-bottom.gif"></td>
+			</tr>
+ -->
+ 	</table>
+<span class="labeltext"><input type="submit"
+                style="color=#0066CC;background-color:#DDDDDD;width=130;"
+                value="Submit" name="submit" onclick="javascript: return check_req_fields()">
+                <INPUT TYPE="RESET"
+                style="color=#0066CC;background-color:#DDDDDD;width=130;"
+                VALUE="Reset" onclick="javascript: putfocus()">
+
+      </FORM>
+</table>
+</body>
+</html>

@@ -1,0 +1,109 @@
+Issues - July 22, 2017
+======================
+Customer Portal
+===============
+1. Need to provide a customer login and show the following tabs.
+   Support, WO, Sales Order and Dispatch.  Can just be summary pages.DONE
+
+Supplier Portal
+===============
+1. Need to provide a Supplier login.
+   PO, Mtl Tracker .DONE
+
+Sales Order
+-----------
+1. Sales order # duplicate check - DONE
+2. A quote already linked to a Sales Order - DONE
+3. Order Date is mandatory - DONE
+4. Change the label of Sales Order # as "Our Sales Order #". DONE
+5. Change the top heading from SO to Sales Order. DONE
+6. Note - PO # is not mandatory - some companies do not link Sales Order and RM PO. DONE
+7. Line items should have Get Part # which should pull Part #, desc, dimensions(if applicable) and price with currency and units.(master data)
+   The new columns - PArt #, Dimensions, Units, currency -  should get added.DONE
+8. Due date is mandatory - so , we need to put an asterisk. DONE
+9. Tax should be configurable based on a config file - 
+    this could be config.php file with IGST = 18%.
+10. Sales Order #, Quote #, Desc, etc. are not being saved or not being shown
+    in the summary page. DONE
+
+CRM
+===
+When I click on CRM, it should take me to the Dashboard page by default. DONE
+
+Leads
+=====
+1. Product Interest should be a dropdown.
+   - ERP, CRM, Mobile Apps, Custom App.
+   This should come from a table instead of hardcoding...for now, hardcode DONE
+   and then later let's convert this to a table.
+2. Email should get validated and it should be a corporate email - not yahoo
+   or gmail or hotmail. DONE
+3  Stage should be mandatory. DONE
+
+Opportunity
+===========
+1. View Leads is not working. DONE  
+2. Lead name should be shown in Opportunity and not the number. DONE
+3. Need to have one more field for COmpany turnover.
+4. Provide a Get lead button in Opportunity to connect the lead.
+   If not, they can directly enter also.
+5. Opportunity Assignment must be from a selection list.
+6. In View Leads link, show the Lead created date. DONE
+
+Stores
+======
+1. IN summary page, remove Invoice Date and Invoice # so that the horizontal
+   scroll does not appear.DONE
+
+Create a Heartbeat menu item and when the user logs in, it should take
+them straight to the Heartbeat page.
+
+Prodn Tab
+=========
+1. Separate the New entry into a different form.DONE
+
+Post Process
+============
+1. Move Post Process as a subtab under WO.DONE
+
+Purchasing
+==========
+1. Move Mtl tracker under Purchasing.DONE
+
+MES
+---
+1. Integrate capacity plan and related stuff under MES.DONE
+
+Deptwise Login
+==============
+1. Need to create deptwise logins and test
+2. Need to create a Customer Portal
+3. Need to create a Supplier portal with Mtl tracker
+
+Support & Solution tabs
+=======================
+Move them under CRM. DONE
+
+Payroll
+=======
+1. Need to complete this design.
+
+
+Future Need to add forecasting features as below
+=================================================
+RB-ERP Forecasting Key Features:
+
+    3 Year Statistical Forecast
+    Seasonality and smoothing factors
+    Safety Stock calculations based on customer service level
+    Linear regression, weighted average, percentage change methods
+    Forecast aggregation/disaggregation
+    Extract from actual usage
+    Export to Master Scheduling
+
+RB-ERP Forecasting Key Benefits:
+
+    Improve customer service
+    Increase inventory turns
+    Decrease costs
+    Become more pro-active

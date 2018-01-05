@@ -1,0 +1,63 @@
+.Heading {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 9pt; font-style: normal; line-height: normal;
+font-weight: font-variant: normal; text-transform: none; color: #000000}
+
+.pageheading {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 9pt; font-style: normal; line-height: normal;
+font-weight: font-variant: normal; text-transform: none; color: #000000}
+
+.labeltext {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt; font-style: normal;
+line-height: normal; font-weight: bold; font-variant: normal; text-transform: none; color: #000000}
+
+.tabletext {  font-family: Verdana, sans-serif; font-size: 8pt; font-style: normal;
+line-height: normal; font-weight: normal; font-variant: normal;white-space:nowrap; text-transform: none; color: #000000}
+
+.linktext {  font-family: Verdana, sans-serif; font-size: 9pt; font-style: normal;
+line-height: normal; font-weight: normal; font-variant: normal; text-transform: none; color: #0066CC}
+
+.welcome {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt; font-style: normal;
+line-height: normal; font-weight: normal; font-variant: normal; text-transform: none; color: #000000}
+
+.customer {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt; font-style: normal;
+line-height: normal; font-weight: normal; font-variant: normal; text-transform: none; color: #00FFCC}
+
+.pheading {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11pt; font-style: normal; line-height: normal;
+font-weight: font-variant: normal; text-transform: none; color: #000000}
+
+.pheading1 {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 9pt; font-style: normal; line-height: normal;
+font-weight: font-variant: normal; text-transform: none; color: #000000}
+
+.pheading2 {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt; font-style: normal; line-height: normal;
+font-weight: font-variant: normal; text-transform: none; color: #000000}
+
+.box { border-top: thin solid #00EEEE;
+       border-left: thin solid #00FFEE;
+       border-right: thin solid #00FFEE;
+       border-bottom: thin solid #00FFEE;
+     }
+.box1 { border-top: thin solid #EE0000;
+       border-left: thin solid #EE0000;
+       border-right: thin solid #EE0000;
+       border-bottom: thin solid #EE0000;
+     }
+.box2 { border-top: thin solid #EE00EE;
+       border-left: thin solid #EE00EE;
+       border-right: thin solid #EE00EE;
+       border-bottom: thin solid #EE00EE;
+     }
+     
+.bgcolor1{ background-color: #DFDEDF
+         }
+.bgcolor2{ background-color: #FFFFFF
+         }
+.bgcolor3{ background-color: #DFDEDF
+         }
+.bgcolor4{ background-color: #FFFFFF
+         }
+.asterisk{ color: #FF0000 }
+
+.cnf{ background-color: #faf0e6
+    }
+.sup{ background-color: #FF9900
+    }
+.ff{ background-color: #A0C544
+    }
+         

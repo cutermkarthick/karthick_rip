@@ -1,0 +1,199 @@
+<HTML>
+<HEAD>
+ <TITLE>Cim Validations and Flow</TITLE>
+ <link rel="stylesheet" href="style.css">
+ <style type="text/css">
+body
+{
+background-color:#FFFFFF;
+}
+p
+{
+font-family:"Comic Sans MS";
+font-size:15px;
+}
+li
+{
+ font-family:"Comic Sans MS";
+ font-size:15px;
+}
+</style>
+</head>
+
+</HEAD>
+<BODY>
+<table width="100%" border=1>
+<tr>
+<td><p>
+<a href="#Cust Po">Cust Po</a> ,<a href="#Assembly Review">Assembly Review</a>,<a href="#RMPO">RMPO</a> ,<a href="#GRN">GRN</a> ,
+<a href="#WO">WO</a>,<a href="#BOM">BOM</a>,<a href="#Assembly Work Order">Assembly Work Order</a>,<a href="#SPPO">SPPO</a>
+,<a href="#RM Master">RM Mster</a>,<a href="#Reports">Reports</a>,<a href="#StrokesCalc">StrokesCalc</a>
+</p></td>
+</tr>
+<tr>
+<td>
+ <h3><a name="Cust Po">1.	Cust PO</h3>
+                   <p> Based on the CRN entered by the user in the line item
+                   <ul><li>(a) Part Number and Part Name details are taken from Master Data (Active).</li>
+                   <li>(b) The remaining details i.e. RM Type, RM Spec, Condition, uom, length, width,
+                         thickness, grain flow, maxruling, altspec and unit RM cost details are
+                         taken from RM Master.</li>
+                   <li>(c) All spec types of RM Master i.e. Primary Spec, Alt Spec1, and Alt Spec2 are shown.</li>
+                   <li>(d) No comparison of the data. </li></ul></p>
+
+    <p><h3><a name="Assembly Review">2.  Assembly Review</h3>
+                    <ul><li>(a) The CRN, Part Number, Description, BOM ref, BOM Issue (BOM rev #) fields are
+                          populated with data from BOM master. </li>
+                    <li>(b) Along with the parent details the child details i.e. manufactured, sub assembly, bought
+                          out items and consumables are also populated in the line items after the parent
+                          details. </li>
+                   <li> (c) The user should enter the line number and qty before selecting a parent CRN and
+                          BOM details.The quantity for the child is calculated based on the quantity entered
+                          for the parent i.e. parent quantity * qpa of the child. The line numbers for the child
+                          is based on the line number of the parent. </li>
+                   <li>(d) No comparison of the data.</li></ul> </p>
+
+<p><h3><a name="RMPO">3. RMPO</h3>
+                 <ul><li> (a) Data from RM Master (Active) is taken based on the supplier, spec type and CRN
+  entered for Regular type PO .If there are no data matching for the given specification
+  an error message is shown indicating the same. </li>
+                  <li>(b) For Bought Out and Consumable type PO's the instead of CRN part number is entered
+                       and data fetch happens from Part Master based on the supplier and part number given.
+                       If there are no data matching for the given specification an error message is shown
+                       indicating the same.</li>
+                <li>(c) The fields material type and material spec is populated with type and manufacture part
+                      number respectively. The no of lengths is calculated based on the order quantity
+                     entered.</li>
+                <li>(d) Once the data is selected for regular type PO's fields i.e. Dia, length, width, thickness,
+                      rmtype, rmspec,grainflow, maxruling, uom of RM Master (Primary Spec Only) is
+                     compared with data in the cust po line items(Active) for the entered CRN. </li>
+               <li>(e) After the comparison the non matching data are shown in red. No action is taken.
+                      If Special Characters are present an alert is shown indicating the same.  </li>
+                <li>(f) After the PO is entered the quantity received is auto populated as and when a
+                       GRN is created for the PO along with the accepted date i.e. received date of the GRN.
+                       If the quantity coming from GRN is same as or 10 % more than PO quantity i.e. either
+                       no of lengths or no. of meterages the status of the respective line item is set to closed. </li>
+                <li>(g) If more than one GRN is created for the same CRN and line number new line with same
+                     details as the parent CRN line is auto created. The new line number is based on the
+                     parent line number. The respective GRN number, accepted date and quantity received
+                     are entered. </li></ul> </p>
+
+
+  <h3><a name="GRN">4. GRN</h3>
+                <ul><li>(a) If the GRN is RM by CIM based on the PO# and RMPO line number entered the
+                     respective CRN is populated into PO CRN field. </li>
+                <li>(b) After the GRN line item(s) are entered and submitted the entered length, width and
+                      thickness along with raw material spec , type and quantity is compared with RMPO data
+                      for the CRN and line number. No special character Check .   </li>
+               <li>(c) After the comparison if validation fails GRN is stored in pending state. If validation
+                      is complete GRN is  stored in Open state. The pending GRN will go to open state once
+                      the pending GRN is approved by the Director or Purchasing Department.</li>
+               <li>(d)  The GRN can be amended by entering a new line item with the required specification
+                       along with parent line number in the amend line number column. This line will not be
+                       considered to calculate the total qty of the GRN. </li>
+              <li>(e) A child GRN can be created for open GRN's with amended line with the same
+                    specifications as the parent GRN except for line items. The parent GRN #
+                   will be stored in the child GRN.  </li>
+              <li>(f) After submit the child GRN data is validated with RM type and RM spec of RM master
+                   (it should match with at least one spec type of the CRN) and Length, width &thickness are
+                  compared with dim1, dim2 & dim3 of Master Data. </li>
+              <li>(g)  When a GRN is created a new record for the consumption is auto entered with details
+                    like invoice number, invoice date,GRN#,GRN date, RM type, RM spec, length, width ,
+                    thickness, GRN type, parentGRN # quantity and quantity to make. If GRN is edited the
+                     respective fields are updated.</li>  </ul>
+
+<h3><a name="WO">5. WO</h3>
+               <ul><li>(a) When creating a Work Order on getcrn all the active CRN's from master data are shown
+                    on submit fields part number, part name, project, mps#,mps rev#,drawing #,Rm by
+                    customer,Rm by Cim, part iss , cos, drg iss,dim1,dim2 and dim3 are populated. </li>
+               <li>(b) Cust PO#,Customer,Cust PO qty and Cust PO date fields are populated with data from
+      Cust Po and Cust PO line items.</li>
+<li>(c) Before the set of data  part Iss, Drg Iss and Cos Iss of Cust PO line items
+       are compared with PartIss/Attachments, Drg Iss and Cos Iss of Master data. In case of
+      mismatch of data alert is shown to the user indicating the same and submit of PO details
+     is  aborted. </li>
+<li>(d) If a Work Order is being created for a CRN with treatment type Manufacture/With
+     Treatment and there exists a Work Order which is 84/112 weeks old then an alert is
+     shown as Red highlighted WO exists for the CRN and get PO is aborted similarly
+     if Fair status is not entered for the previous Work Order for the CRN an alert is
+     shown as Fair Status not entered and get PO aborted.</li>
+              <li>(e) RM Type and RM Spec fields are taken from GRN along with GRN number and batch
+       number. WO quantity cannot be greater than the selected GRN quantity. </li>
+             <li> (f) When a WO is cancelled the parts are returned to the GRN and the same is reflected in
+        the GRN balance shown in details and summary. </li>
+<li>(g) To split a Work Order amendment qty has to be entered in the parent WO and stage
+     changed to 'split' The child WO will have the same qty as parent WO amendment qty and
+     parent wonum as Worefnum.</li>
+<li>(h) For treatment type DN entry can be created when DN stage is entered in the line items.
+     After the DN is created and line item is entered by respective departments the WO line
+    item is updated with the data entered in DN.If the DN is cancelled the respective line item
+    from WO are deleted and qty's are updated. </li> </ul>
+
+
+<h3><a name="BOM">6. BOM</h3>
+            <ul><li> (a) A BOM is created for Assembly/Kit type CRN. Relevant data CRN# , cos iss, drg iss, drg
+                   no, assy part number are taken from Master Data (Active).  </li>
+             <li>(b) For Manufactured Line Items both manufactured and assembly type CRN's and related
+                  Fields part# , part name ,part iss, mps rev, mps # ,drg iss  are taken from Master Data
+                  based on the type select.
+                  For Bought out Items Part Number, description, part iss, drg iss ,make ,supplier details are
+                  taken from Vend Part Master. </li>
+            <li>(c) After the BOM is created it is stored in pending state and all the details can be edited
+                  until It is approved by QA department. Once approved BOM goes to active state.</li>
+            <li>(d) Two BOM's with same revision number cannot be in active state. Edit of inactive BOM's
+                   is not allowed. </li></ul>
+
+<h3><a name="Assembly Work Order">7. Assembly Work Order</h3>
+            <ul><li>(a) All the details i.e. manufactured, Sub Assembly, Bought Out, consumables from BOM based
+                 on the BOM selected while creating the Assembly WO is populated.  The qty for WO is
+                the product of assembly qty and qpa for the respective CRN's and part number. </li>
+           <li>(b) Cust PO#,Customer and Cust PO qty fields are populated with data from
+                Assembly Review Assembly Review line items. </li>
+           <li>(c) Two types of Assembly WO's can be created i.e. Assembly type or Kit type.</li></ul>
+
+<h3><a name="SPPO">8. SPPO</h3>
+              <ul><li>(a) For 'regular' cust po type CRN, RM type, item description, cos iss, drg iss, RM spec
+                    and part iss  details are taken from Cust PO Line Item (Active),
+                     part number and secondary number are taken from Master data (active) and price from
+                     SP Master. </li>
+              <li>(b)For cust po type other than 'regular' CRN, drg iss and part iss  are taken from BOM
+                    Manufactured Items. Part number and secondary number are taken from Master data
+                    (active). No price Fetch. Cust Po Number is taken from Assembly Review. </li></ul>
+
+<h3><a name="RM Master">9. RM Master</h3>
+               <ul><li>(a) A CRN with different spec types i.e. primary spec, alt spec1,alt spec2 and alt specP can
+                     be created. Two active CRN's with same spec type cannot be created.</li>
+               <li>(b) For a CRN to become Active it has to be approved by both Directors and Engineering
+                     Departments.  <li></ul>
+
+<h3><a name="Reports">10. Reports</h3>
+              <ul><li>(a) All the reports for stock, efficiency and discrepancy are shown.</li>
+              <li>(b) The CRN stock report shows the total available quantity for a particular CRN entered.<br>
+                     The Work in progress (WIP) is the total quantity that is still in open state and under
+                      progress. For Treatment type WO's the WIP is the total WO qty (open) excluding the
+                      quantity that has been sent for treatment. <br>
+                      The Delivery Note (DN) balance is the total DN Qty sent subtracted by total DN qty
+                     received. This qty is present only for treatment type Work Orders.<br>
+                     The Finished Goods (FG) Qty is the total qty that need to be dispatched. The FG qty is
+                     difference between total WO Comp Qty (closed WO) and total dispatched qty.<br>
+                     The GRN stock is the total available GRN stock i.e. GRN Qty- WO qty + WO rework. <br>
+                     The RMPO qty is the Order Qty for that CRN (Latest Due date and PO is considered). <br>
+                     If the delivery of PO is done by air then an additional 20 days is added to the due date
+                     and an additional 60 days if it is by sea.
+                     It also shows details of these stocks.</li></ul>
+
+    <h3><a name="StrokesCalc">11. StrokesCalc</a></h3>
+      <ul>
+        <li>(a) Strokes Calculation based on how many shifts per day and avail capacity hours and per month how many working days.</li>
+        <li>Here We did  24 working day per month.</li>
+        <li>Perday Hours = Mc Avail Hrs/(24 * shifts)</li>
+        <li>Strokes per Hours = ff hrs/Perday Hours</li>
+        <li>Days = Strokes per Hours/Shift Hours</li>
+        <li>Hours = Strokes per Hours%Shift Hours</li>
+      </ul>
+
+   </td></tr>
+   </table>
+
+</BODY>
+</HTML>

@@ -1,0 +1,439 @@
+<?php
+//
+//==============================================
+// Author: FSI                                 =
+// Date-written = July 10, 2006                =
+// Filename: salesorder.php                    =
+// Copyright of Badari Mandyam, FluentSoft     =
+// Revision: v1.0 OWT                          =
+// Displays list of Salesorder.                =
+//==============================================
+
+session_start();
+header("Cache-control: private");
+
+if ( !isset ( $_SESSION['user'] ) )
+{
+     header ( "Location: login.php" );
+
+}
+$userid = $_SESSION['user'];
+$dept = $_SESSION['department'];
+$_SESSION['pagename'] = 'salesorder';
+
+$page = "CRM: Cust PO";
+session_register('pagename');
+if ($dept != 'Sales')
+{
+     header("Location:login.php");
+}
+$userrole = $_SESSION['userrole'];
+ //echo   $userrole;
+//Following code added to implement search,sort  and Pagination on Dec 29-04 by Jerry George
+$wcond = "company.name like '". $_SESSION[cname]."'";
+$cond1 = "sales_order.po_num like '%'";
+$cond2 = "soli.crn_num like '%'";
+$sort1='name';
+$select='name';
+$worec='';
+$where1='';
+$oper='like';
+$oper1='like';
+$oper2='like';
+if ( !isset ( $_SESSION['cname'] ) )
+{
+     $_SESSION[cname]=$_REQUEST['cname'];
+
+}
+//echo $_SESSION[cname];
+if ( isset ( $_REQUEST['cname'] ))
+{
+
+
+  $_SESSION[cname]=$_REQUEST['cname'];
+   // echo $_SESSION['cname'];
+	$count=$
+   $cname_match =$_SESSION[cname];
+   if ($cname_match!='')
+{
+
+     if ( isset ( $_REQUEST['salesorder_oper'] ) )
+    {
+   	  $oper = "like";
+    }
+    else
+    {
+    	 $oper = 'like';
+    }
+    if ($oper == 'like')
+    {
+    	 $cname = "'" . $_SESSION[cname] . "%" . "'";
+    }
+     else
+     {
+ 	 $cname = "'" . $_SESSION[cname] . "'";
+     }
+     $wcond = "company.name " . $oper .  " " . $cname;
+}
+else
+{
+$wcond="company.name like '". $_SESSION[cname]."'  and soli.partnum like '".$_REQUEST['partnumber']."%' and soli.crn_num like '".$_REQUEST['final_crnnum']."%' and sales_order.po_num like '".$_REQUEST['final_ponum']."%' ";
+}
+
+ }else
+{
+ 	$cname_match = '';
+}
+if ( isset ( $_REQUEST['sortfld1'] ) )
+{
+	 $sort1 = $_REQUEST['sortfld1'];
+}
+$partnumber=$_REQUEST['partnumber'];
+$crnnum=$_REQUEST['final_crnnum'];
+$ponum=$_REQUEST['final_ponum'];
+if($_SESSION[cname]=='select'  && ($partnumber!='' || $crnnum !='' || $ponum !=''))
+{
+//echo "am here";
+$wcond="soli.partnum like '".$_REQUEST['partnumber']."%'and soli.crn_num like '".$_REQUEST['final_crnnum']."%'and sales_order.po_num like '".$_REQUEST['final_ponum']."%' ";
+}
+if(($partnumber==''|| $crnnum =='' || $ponum =='' )&& $cname_match!='')
+{
+$wcond="company.name like '". $_SESSION[cname]."'";
+}
+
+if(isset ($_REQUEST['status'] ) )
+{
+
+     $sval = $_REQUEST['status'];
+
+      if ($sval== 'Open')
+      {
+
+         $cond0 = "(sales_order.status = '" . $sval . "' || sales_order.status is NULL || sales_order.status = '')";
+      }
+     else if ($sval == 'Closed')
+      {
+         $cond0 = "sales_order.status = '" . $sval . "'" ;
+      }
+      else if ($sval == 'Pending')
+      {
+         $cond0 = "sales_order.status = '" . $sval . "'" ;
+      }
+     else if ($sval == 'All')
+      {
+         $cond0 = "(sales_order.status like '%' || sales_order.status is NULL)";
+      }
+       else if ($sval == 'Cancelled')
+      {
+         $cond0 = "sales_order.status = '" . $sval . "'" ;
+      }
+}
+else
+{
+     $sval = 'Open';
+     $cond0 = "(sales_order.status = '" . $sval . "' || sales_order.status is NULL || sales_order.status = '')";
+}
+if ( isset ( $_REQUEST['final_ponum'] ) )
+{
+     $ponum_match = $_REQUEST['final_ponum'];
+     if ( isset ( $_REQUEST['ponum_oper'] ) ) {
+          $oper1 = $_REQUEST['ponum_oper'];
+     }
+     else {
+         $oper1 = 'like';
+     }
+     if ($oper1 == 'like') {
+         $final_ponum = "'" . $_REQUEST['final_ponum'] . "%" . "'";
+     }
+     else {
+         $final_ponum = "'" . $_REQUEST['final_ponum'] . "'";
+     }
+
+     $cond1 = "sales_order.po_num " . $oper1 . " " . $final_ponum;
+}
+else
+{
+     $ponum_match = '';
+}
+/*if ( isset ( $_REQUEST['final_crnnum'] ) )
+{
+     $crnnum_match = $_REQUEST['final_crnnum'];
+     if ( isset ( $_REQUEST['crnnum_oper'] ) ) {
+          $oper1 = $_REQUEST['crnnum_oper'];
+     }
+     else {
+         $oper2 = 'like';
+     }
+     if ($oper2 == 'like') {
+         $final_crnnum = "'" . $_REQUEST['final_crnnum'] . "%" . "'";
+     }
+     else {
+         $final_crnnum = "'" . $_REQUEST['final_crnnum'] . "'";
+     }
+
+     $cond2 = "so_line_items.crn_num " . $oper2 . " " . $final_crnnum;
+}
+else
+{
+     $crnnum_match = '';
+} */
+//echo '$cond0='.$cond0;
+
+$cond = $cond0 . ' and ' . $wcond ;
+//echo "this".$cond;
+// how many rows to show per page
+$rowsPerPage = 1000;
+
+// by default we show first page
+$pageNum = 1;
+
+// if $_GET['page'] defined, use it as page number
+if (isset($_REQUEST['page']))
+{
+    $pageNum = $_REQUEST['page'];
+}
+if (isset($_REQUEST['totpages']))
+{
+    $totpages = $_REQUEST['totpages'];
+}
+
+//echo $wcond;
+// counting the offset
+$offset = ($pageNum - 1) * $rowsPerPage;
+
+
+// First include the class definition
+include_once('classes/userClass.php');
+include_once('classes/salesorderClass.php');
+include_once('classes/displayClass.php');
+include('classes/quoteClass.php');
+include('classes/quoteliClass.php');
+$newsalesorder = new salesorder;
+$newdisplay = new display;
+?>
+<link rel="stylesheet" href="style.css">
+<script language="javascript" src="scripts/mouseover.js"></script>
+<script language="javascript" src="scripts/salesorder.js"></script>
+<html><head>
+<title>Customer PO</title>
+</head>
+<body leftmargin="0"topmargin="0" marginwidth="0">
+<form action='salesorder.php?salesorder=$cname_match&salesorder_oper=$oper&sortfld1=$sort1&salesorderfl=$where1' method='post' enctype='multipart/form-data'>
+<?php
+
+include('header.html');
+?>
+<!-- <table width=100% cellspacing="0" cellpadding="6" border="0">
+	<tr>
+		<td>
+			<table width=100% border=0 cellspacing="0" cellpadding="0">
+   				<tr>
+        					<td colspan=2><span class="welcome"><b>Welcome <?php echo $userid?></b></td>
+        					<td align="right">&nbsp;
+       					    <a href="exit.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image16','','images/logout_mo.gif',1)"><img name="Image16" border="0" src="images/logout.gif"></a></td>
+        	    </tr>
+			</table>
+			<table width=100% border=0 cellpadding=0 cellspacing=0  >
+				<tr><td></td></tr>
+				<tr>
+					<td>
+<?php $newdisplay->dispLinks(''); ?> -->
+<!-- </td></tr> -->
+<table width=100% border=0 cellpadding=0 cellspacing=0  >
+  <tr><td width="6"><img src="images/spacer.gif " width="6"></td>
+	    <td bgcolor="#FFFFFF">
+   <table width=100% border=0 cellpadding=6 cellspacing=0  >
+      <td><span class="heading"><i>Please click on Sl. # to Edit/Delete</i></td></tr>
+      <tr> <td>
+      <table width=100% border=0 cellpadding=4 cellspacing=1 bgcolor="#DFDEDF" class="stdtable1" >
+<td bgcolor="#F5F6F5" colspan=5><span class="heading"><b><center>Search Criteria</center></b></td>
+<td rowspan=3 align="center" bgcolor="#FFFFFF">
+<button class="stdbtn btn_blue" style="background-color:#0591e5" onClick="javascript: return searchsort_fields()" >Get</button>
+</td>
+</tr>
+<tr>
+<td colspan=2 bgcolor="#FFFFFF" ><span class="heading"><b>Company</b>
+<?php
+           $res=$newsalesorder->getcompany();
+?>
+<select name="cname">
+<option value="select">Select</option>
+<?
+        $flag = 0;
+	$row1=mysql_fetch_object($res);
+	while($row1!=NULL)
+	{
+	        $name=$row1->name;
+		if($_SESSION[cname]==$row1->name)
+		{
+			$status="selected";
+		}
+		else
+		{
+			$status="false";
+		}
+?>
+<option value="<? echo $row1->name;?>"
+<?php
+                echo $status ?>>
+
+<?
+
+                   echo $row1->name;
+?>
+</option>
+<?
+		$row1=mysql_fetch_object($res);
+          }
+?>
+</select></td>
+<td colspan=1 align="left" bgcolor="#FFFFFF"><span class="labeltext"><span class="Heading"><strong>Part</strong></span><strong># &nbsp;
+  <label>
+  <input name="partnumber" type="text" id="partnumber" value="<?php echo $partnumber?>" size="20">
+  </label>
+</strong></td>
+<td  colspan=1 align="left" bgcolor="#FFFFFF"><span class="labeltext"><span class="Heading"><strong>PRN</strong></span><strong>#
+  <label>
+  <input name="final_crnnum" type="text" id="final_crnnum" value="<?php echo $crnnum?>" size="20">
+  </label>
+</strong></td>
+
+						<input type="hidden" name="count" value="0">
+												<input type="hidden" name="sortfld1">
+												<input type="hidden" name="salesorderfl">
+										  <input type="hidden" name="salesorder_oper">
+                                        									 	</td>
+
+</tr>
+<tr>
+<td bgcolor="#FFFFFF" colspan=2><span class="labeltext"><b>Status = &nbsp;</b>
+<span class="tabletext"><select name="status" size="1">
+<?php
+      if ($sval == 'Open')
+      {
+?>
+	<option selected value='Open'>Open
+	<option value='Pending'>Pending
+	<option value='All'>All
+	<option value='Closed'>Closed
+    <option value='Cancelled'>Cancelled
+<?php
+      }
+      else if ($sval == 'Closed')
+      {
+?>
+	<option selected value='Closed'>Closed
+	<option value='Open'>Open
+	<option value='Pending'>Pending
+	<option value='All'>All
+    <option value='Cancelled'>Cancelled
+<?php
+      }
+      else if ($sval == 'All')
+      {
+?>
+	<option selected value='All'>All
+	<option value='Open'>Open
+	<option value='Pending'>Pending
+	<option value='Closed'>Closed
+    <option value='Cancelled'>Cancelled
+<?php
+      }
+      else if ($sval == 'Cancelled')
+      {
+?>
+	<option selected value='Cancelled'>Cancelled
+	<option value='Open'>Open
+	<option value='Pending'>Pending
+	<option value='All'>All
+    <option value='Closed'>Closed
+<?php
+      }
+      else if ($sval == 'Pending')
+      {
+?>
+	<option selected value='Pending'>Pending
+	<option value='Open'>Open
+	<option value='Cancelled'>Cancelled
+	<option value='All'>All
+    <option value='Closed'>Closed
+<?php
+      }
+?>
+</select>
+</td>
+
+<td bgcolor="#FFFFFF" colspan=1><span class="labeltext"><b>Cust PO</b>
+<span class="tabletext"><select name="ponum_oper" size="1" width="25">
+<?php
+   if ( isset ( $_REQUEST['ponum_oper'] ) ){
+          $check2 = $_REQUEST['ponum_oper'];
+
+                   if ($check2 =='like'){
+?>
+    	            <option value>=
+	                <option selected>like
+<?php
+                    }else{
+?>
+                    <option selected>=
+	                <option value >like
+
+ <?php
+                    }
+   }else{
+?>
+ 	<option selected>like
+	<option value>=
+ <?PHP
+  }
+ ?>
+</select>
+<input type="text" name="final_ponum" size=10 value="<?php echo $ponum_match ?>" >
+</td>
+<td td bgcolor="#FFFFFF" colspan=1>&nbsp;</td>
+</tr>
+						</table>
+						</td></tr>
+						<tr><td>
+
+ <table width=100% border=0>
+	<div class="contenttitle radiusbottom0">
+  <h2 class="table"><span>List of Contract Reviews: <?php echo $_SESSION[cname];?> 
+    <input type="button" class="stdbtn btn_blue" style="float:right;padding:2px;margin-right:2px;"  onClick="location.href='new_so.php'" value="New Sales Order" ></h2></span>
+ 
+</div>  
+
+</table>
+
+<table   border=0 cellpadding=3 cellspacing=1 class="stdtable" >
+<thead>
+<tr>
+<th class="head0" style="width:10px" >Sl.#</th>
+<th class="head1">Company Name</th>
+<th class="head0">Cust PO</th>
+<th class="head1">Status</th>
+<th class="head0"><b>Order Date</b></th>
+<!--<th class="head1"><b>Part No</b></th>-->
+<th class="head0"><b>PRN</b></th>
+<th class="head1"><b>Ln</b></th>
+<th class="head0"><b>PO Qty</b></th>
+<th class="head1"><b>PO Amount</b></th>
+<!--<th class="head0"><b>WO No.</b></th>-->
+<th class="head1"><b>WO<br>Qty</b></th>
+<!--<th class="head0"><b>Acc<br>Qty</b></th>-->
+<!--<th class="head1"><b>QA<br>Rej</b></th>-->
+<th class="head0"><b>Cust<br>Rej</b></th>
+<!--<th class="head1"><b>Ret</b></th>-->
+<th class="head0"><b>Balance<br>for WO</b></th>
+<th class="head1"><b>Disp<br>Qty</b></th>
+<th class="head0"><b>Balance<br>for Disp</b></th>
+<th class="head1"><b>Bal Amt</b></th>
+<tr>
+</thead>
+</table>
+
+						</table>
+      </FORM>
+</body>
+</html>

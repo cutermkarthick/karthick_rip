@@ -1,0 +1,518 @@
+<?php
+//
+//==============================================
+// Author: FSI                                 =
+// Date-written = October 12, 2006             =
+// Filename: printsoDetails.php                =
+// Copyright (C) FluentSoft Inc.               =
+// Contact bmandyam@fluentsoft.com             =
+// Revision: v1.0 OWT                          =
+// Print Salesorder Details                    =
+//==============================================
+
+session_start();
+header("Cache-control: private");
+
+if ( !isset ( $_SESSION['user'] ) )
+{
+     header ( "Location: login.php" );
+
+}
+$userid = $_SESSION['user'];
+
+$_SESSION['pagename'] = 'cofcDetails';
+session_register('pagename');
+$disprecnum = $_REQUEST['disprecnum'];
+
+// First include the class definition
+
+include('classes/dispatchClass.php');
+include('classes/dispatchliClass.php');
+include('classes/displayClass.php');
+$newDispatch = new dispatch;
+$newdisplay = new display;
+$newLI = new dispatch_line_items;
+$result = $newDispatch->getdispatchDetails($disprecnum);
+$myrow = mysql_fetch_row($result);
+
+?>
+<link rel="stylesheet" href="style.css">
+
+<html>
+<style type="text/css">
+<!--
+a:link {
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}
+a:active {
+	text-decoration: none;
+}
+.style6 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #000000;
+	font-size: 12px;
+}
+.style14 {font-size: 12; font-weight: bold; }
+.style16 {font-size: 16; font-weight: bold; }
+-->
+</style>
+<head>
+<title></title>
+</head>
+  <body>
+<table width=100% border=0>
+<tr>
+<td align="center"><font style="Arial" size=5><center><b><A HREF="javascript:window.print()">Certificate of Conformity</A></b></center></td</tr>
+</table>
+<table width=100%>
+<tr>
+    <td><img src="images/masthead.jpg" alt="CIM Tools" width="137" height="35" class="Masthead" /></td>
+<tr>
+    <td align="center"><span class="heading"><b>CIM TOOLS PRIVATE LIMITED.</b></td>
+</tr>
+<tr>
+    <td align="center"><span class="heading">Plot No. 467-469, Site No. 1D, 4th Phase, 12th Cross, Peenya Industrial Area, Bangalore 560058.  INDIA</b></td>
+</tr>
+<tr>
+
+    <td align="center"><span class="heading">Phone: 91-80-41171382/83   FAX: 91-80-41171381    email:cimtol@airtelmail.in</b></td>
+</tr>
+</table>
+<table width=100% border=1 cellspacing=0 cellpadding=0>
+<tr bordercolor=##777777>
+<td>
+<table>
+<?php
+if($myrow[20] == 'Primary' || $myrow[20] == '')
+{
+?>
+<pre>
+<b><span class="heading">Deliver to:</b>
+<tr><span class="tabletext"><?php echo $myrow[11] ?></tr>
+<tr><span class="tabletext"><?php echo $myrow[12] ?></tr>
+<tr><span class="tabletext"><?php echo $myrow[13] . ", " . $myrow[14] . ". " . $myrow[15] . ". " . $myrow[16];?></tr>
+<tr><span class="tabletext"><?php echo "PH: " . $myrow[17]; ?></tr>
+</pre>
+<?php
+}
+else if($myrow[20] == 'Billing')
+{
+?>
+<pre>
+<b><span class="heading">Deliver to:</b>
+<tr><span class="tabletext"><?php echo $myrow[22] ?></tr>
+<tr><span class="tabletext"><?php echo $myrow[23] ?></tr>
+<tr><span class="tabletext"><?php echo $myrow[24] . ", " . $myrow[25] . ". " . $myrow[26] . ". " . $myrow[27];?></tr>
+<tr><span class="tabletext"><?php echo "PH: " . $myrow[17]; ?></tr>
+<?php
+}
+else if($myrow[20] == 'Shipping')
+{
+?>
+<pre>
+<b><span class="heading">Deliver to:</b>
+<tr><span class="tabletext"><?php echo $myrow[28] ?></tr>
+<tr><span class="tabletext"><?php echo $myrow[29] ?></tr>
+<tr><span class="tabletext"><?php echo $myrow[30] . ", " . $myrow[31] . ". " . $myrow[32] . ". " . $myrow[33];?></tr>
+<tr><span class="tabletext"><?php echo "PH: " . $myrow[17]; ?></tr>
+<?php
+}
+?>
+</table>
+</td>
+<td>
+<table>
+<?php
+if($myrow[21] == 'Primary' || $myrow[21] == '')
+{
+?>
+<pre>
+<b><span class="heading">Invoice to:</b>
+<tr><span class="tabletext"><?php echo $myrow[11] ?></tr>
+<tr><span class="tabletext"><?php echo $myrow[12] ?></tr>
+<tr><span class="tabletext"><?php echo $myrow[13] . ", " . $myrow[14] . ". " . $myrow[15] . ". " . $myrow[16];?></tr>
+<tr><span class="tabletext"><?php echo "PH: " . $myrow[17]; ?></tr>
+</pre>
+<?php
+}
+else if($myrow[21] == 'Billing')
+{
+?>
+<pre>
+<b><span class="heading">Invoice to:</b>
+<tr><span class="tabletext"><?php echo $myrow[22] ?></tr>
+<tr><span class="tabletext"><?php echo $myrow[23] ?></tr>
+<tr><span class="tabletext"><?php echo $myrow[24] . ", " . $myrow[25] . ". " . $myrow[26] . ". " . $myrow[27];?></tr>
+<tr><span class="tabletext"><?php echo "PH: " . $myrow[17]; ?></tr>
+<?php
+}
+else if($myrow[21] == 'Shipping')
+{
+?>
+<pre>
+<b><span class="heading">Invoice to:</b>
+<tr><span class="tabletext"><?php echo $myrow[28] ?></tr>
+<tr><span class="tabletext"><?php echo $myrow[29] ?></tr>
+<tr><span class="tabletext"><?php echo $myrow[30] . ", " . $myrow[31] . ". " . $myrow[32] . ". " . $myrow[33];?></tr>
+<tr><span class="tabletext"><?php echo "PH: " . $myrow[17]; ?></tr>
+<?php
+}
+?>
+</table>
+</td>
+<td>
+<table>
+<pre>
+<?php
+
+              if($myrow[2] != '0000-00-00' && $myrow[2] != '' && $myrow[2] != 'NULL')
+              {
+                $datearr = split('-', $myrow[2]);
+                $d=$datearr[2];
+                $m=$datearr[1];
+                $y=$datearr[0];
+                $x=mktime(0,0,0,$m,$d,$y);
+                $dispdate=date("M j, Y",$x);
+	      }
+	      else
+              {
+                $dispdate="";
+	      }
+?>
+<tr><td><span class="labeltext">Release Note No. : <span class="tabletext"><?php echo $myrow[1] ?></td></tr>
+<tr><td><span class="labeltext">Dispatch Date : <span class="tabletext"><?php echo $dispdate ?></td></tr>
+</pre>
+</table>
+</td>
+</tr>
+</table>
+<br>
+<table width=100% border=1 cellspacing=0 cellpadding=4 rules="all">
+       <tr bordercolor=#777777>
+            <td align="center" width=2%><span class="tabletext"><b>Qty</b></td>
+            <td align="center" width=10%><span class="tabletext"><b>Part No.</b></td>
+            <td align="center" width=12%><span class="tabletext"><b>Description</b></td>
+            <td align="center" width=2%><span class="tabletext"><b>Drg<br>Iss</b></td>
+            <td align="center" width=2%><span class="tabletext"><b>Part<br>Iss</b></td>
+            <td align="center" width=6%><span class="tabletext"><b>Customer<br>Order No.</b></td>
+            <td align="center" width=3%><span class="tabletext"><b>Order<br>Item No.</b></td>
+            <td align="center" width=4%><span class="tabletext"><b>Date<br>Code</b></td>
+            <td align="center" width=6%><span class="tabletext"><b>Batch<br>No.</b></td>
+            <td align="center" width=6%><span class="tabletext"><b>Matl<br>Spec</b></td>
+            <td align="center" width=4%><span class="tabletext"><b>CIM<br>WO No.</b></td>
+			<td align="center" width=4%><span class="tabletext"><b>Supp<br>WO No.</b></td>
+            <td align="center" width=6%><span class="tabletext"><b>GRN</b></td>
+            <td align="center" width=6%><span class="tabletext"><b>Insp Stamp</b></td>
+       </tr>
+
+<?php
+
+        $i = 0;  $n=0;
+        $wo_num=array();
+        $result = $newLI->getLI($disprecnum,$myrow[36]);
+        while ($myLI = mysql_fetch_assoc($result)) 
+        {
+        $wo_num[$n]=$myLI["wonum"];
+           $wocompdate = $myLI["custpo_date"];
+	   if($wocompdate != '0000-00-00' && $wocompdate != '' && $wocompdate != NULL)
+           {
+              $datearr=split("-",$wocompdate);
+              //$ww=strftime("%W",mktime(0,0,0,$datearr[1],$datearr[2],$datearr[0]));
+              //$ww = sprintf("%02d",($ww+1));
+              //$dow=strftime("%w",mktime(0,0,0,$datearr[1],$datearr[2],$datearr[0]));
+              $ww=date("W",mktime(0,0,0,$datearr[1],$datearr[2],$datearr[0]));
+              $dow=date("w",mktime(0,0,0,$datearr[1],$datearr[2],$datearr[0]));
+			  if ($dow == 0)
+				  $dow = 7;
+              $datecode = $dow . $ww . substr($datearr[0],2);
+              //echo "YY is " . substr($datearr[0],2) . "<br>";
+              //echo "DOW is " . $dow . "<br>";
+              //echo "WW is " . $ww . "<br>";
+
+           }
+           else
+           {
+             // echo "Here in else";
+              $datecode = '';
+           }
+
+            //echo "$date";
+            $line_num = $myLI["line_num"];
+            //$partname = $myLI["partname"];
+            $partname = wordwrap($myLI["partname"], 15, "<br />\n"); 
+            $drgiss = $myLI["drgiss"];
+			$drgiss = wordwrap($myLI["drgiss"], 15, "<br />\n"); 
+            //$partiss = $myLI["partiss"];
+            $partiss = wordwrap($myLI["partiss"], 15, "<br />\n"); 
+            if ($i == 0)
+            {
+               if ($myLI["cos"] != '')
+               {
+                  $cos = ' COS ' . $myLI["cos"];
+               }
+               else 
+               {
+                  $cos = '';
+               }
+            }
+            $itemnum = $myLI["itemnum"];
+
+            $rmspec = $myLI["rmspec"];
+            $wonum = $myLI["wonum"];
+            $partnum = $myLI["partnum"];
+            $batchnum = $myLI["batchNo"];
+            $rmspec = $myLI["rmspec"];
+	        $rmspec = wordwrap($myLI["rmspec"], 15, "<br />\n");
+            $woqty = $myLI["wo_qty"];
+            $compqty = $myLI["comp_qty"];
+            $grnnum = $myLI["grnnum"];
+            //$delvby = $myLI["delv_by"];
+            $custponum = $myLI["custpo_num"];
+        //echo $str;
+/*
+            $rev=strrev($custponum);
+            $arr=split("-",$rev,2);
+            if(sizeof($arr) > 1)
+            {
+             $custpo=strrev($arr[1]);
+            }
+            else
+            {
+             $custpo=strrev($arr[0]);
+            }
+*/
+            $custpo = $custponum;
+            $custpoqty = $myLI["custpo_qty"];
+            $dispatchqty = $myLI["dispatch_qty"];
+            $disp_update = $dispatchqty;
+            if($myLI["supplier_wonum"] != '' && $myLI["supplier_wonum"] != 'NA')
+            {
+             $sup_wo = $myLI["supplier_wonum"];
+            }
+            else
+            {
+             $sup_wo = 'NA';
+            }
+
+             $i = $i + 1;
+             echo "<tr bordercolor=#777777>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$dispatchqty</td>";             
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$partnum</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$partname</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$drgiss</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$partiss</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$custpo</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$itemnum</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$datecode</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$batchnum</td>";          
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$rmspec</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$wonum</td>";
+			 echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$sup_wo</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$grnnum</td>";            
+             echo "<td bgcolor=\"#FFFFFF\">&nbsp</td>";
+
+         $n++;
+        }
+        while ($i < 4)
+        {
+             echo "<tr bordercolor=#777777>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";             
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";          
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";
+	     echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp</td>";            
+             echo "<td bgcolor=\"#FFFFFF\">&nbsp</td>";
+             $i++;
+        }
+        echo "</table><table width=100% border=1 cellspacing=0 cellpadding=0 rules=\"none\">";
+        echo "<tr bordercolor=#FFFFFF><td colspan=13><span class=\"tabletext\"><b>Remarks:</b>$cos</td></tr><nobr>";
+        echo "<tr bordercolor=#FFFFFF><td valign=top><pre><span class=\"tabletext\">$myrow[18]</pre></td></tr>";
+?>
+</td>
+</tr>
+</table>
+
+<br>
+<?php
+//echo count($wo_num)."--------";
+
+/*
+if($myrow[36] == 'Assembly')
+{
+?>
+
+<table width=100% border=1 cellspacing=0 cellpadding=4 rules="all">
+       <tr bordercolor=#777777>
+            <td align="center" width=2%><span class="tabletext"><b>Qty(QTY for WO)</b></td>
+            <td align="center" width=10%><span class="tabletext"><b>Part No.</b></td>
+            <td align="center" width=12%><span class="tabletext"><b>Description</b></td>
+            <td align="center" width=2%><span class="tabletext"><b>Drg<br>Iss</b></td>
+            <td align="center" width=2%><span class="tabletext"><b>Part<br>Iss</b></td>
+            <td align="center" width=6%><span class="tabletext"><b>Customer<br>Order No.</b></td>
+            <td align="center" width=3%><span class="tabletext"><b>Order<br>Item No.</b></td>
+            <td align="center" width=4%><span class="tabletext"><b>Date<br>Code</b></td>
+            <td align="center" width=6%><span class="tabletext"><b>Batch<br>No.</b></td>
+            <td align="center" width=6%><span class="tabletext"><b>Matl<br>Spec</b></td>
+            <td align="center" width=4%><span class="tabletext"><b>CIM<br>WO No.</b></td>
+			<td align="center" width=4%><span class="tabletext"><b>Supp<br>WO No.</b></td>
+            <td align="center" width=6%><span class="tabletext"><b>GRN</b></td>
+            <td align="center" width=6%><span class="tabletext"><b>Insp Stamp</b></td>
+       </tr>
+       <?php
+       $ln=1;
+  for($z=0;$z<count($wo_num);$z++)
+  {
+    // echo $wo_num[$z]."**********-----";
+
+?>
+
+
+<?php
+
+        $m = 0;
+        $result4assy = $newLI->getLI4aasywo($wo_num[$z]);
+
+        while ($myLI4assy = mysql_fetch_assoc($result4assy)) {
+
+
+            $line_num = $myLI4assy["linenum"];
+            $partname = "";
+            $drgiss = "";
+            $partiss = $myLI4assy["issue"];
+            $cos = "";
+            $itemnum = $myLI4assy["itemno"];
+            $datecode = "";
+            $rmspec = "";
+            $wonum = $wo_num[$z];
+			$supplier_wonum = "";
+            $partnum = $myLI4assy["partnum"];
+            $rmspec = "";
+            $woqty = $myLI4assy["qty_wo"];
+            $compqty = $myLI4assy["qty_acc"];
+            $grn_num = $myLI4assy["grn"];
+            //$delvby = $myLI["delv_by"];
+            $custponum = "";
+            $custpoqty = "";
+            $dispatchqty = "";
+            $disp_update = "";
+            $batchno = "";
+            $psn = "";
+            $lirec = $myLI["recnum"];
+
+              $m = $m + 1;
+              echo "<tr bordercolor=#777777>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$woqty</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$partnum</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp;</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp;</td>";?>
+           <td align="center" bgcolor="#FFFFFF"><span class="tabletext"><?php if($partiss !='') echo $partiss ;else ?>&nbsp;</td>
+           <?php
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp;</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$itemnum</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp;</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp;</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp;</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$wonum</td>";
+			 echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">&nbsp;</td>";
+             echo"<td align=\"center\" bgcolor=\"#FFFFFF\"><span class=\"tabletext\">$grn_num</td>";
+             echo "<td bgcolor=\"#FFFFFF\">&nbsp</td>";
+
+
+ $ln++;
+}
+        }
+?>
+</table>
+<?php
+}
+*/
+?>
+<br>
+<table width=100% cellspacing=0 cellpadding=0 rules="all" border=1>
+<tr bordercolor=#CCCCCC>
+<td>
+<span class="tabletext">
+Certified that the whole of the materials and/or parts detailed here in have been<br>
+manufactured, tested and inspected and unless otherwise stated above, conform to the<br>
+requirements of the appropriate contacts and drawings.<br>
+</td>
+<td>
+<span class="tabletext">
+AS9100B Cert No.: 130952 01<br>
+AIR BUS REGISTRATION NUMBER 228169<br>
+</td>
+</tr>
+</table>
+<br>
+<table width=100% border=0>
+<tr rowspan=5 bordercolor=#CCCCCC>
+<td>
+<table width=75% border=1 rules=none cellspacing=0 cellpadding=0>
+<tr bordercolor=#CCCCCC><td>&nbsp</td></tr>
+<tr bordercolor=#CCCCCC><td>&nbsp</td></tr>
+<tr bordercolor=#CCCCCC><td>&nbsp</td></tr>
+<tr bordercolor=#CCCCCC><td>&nbsp</td></tr>
+<tr bordercolor=#CCCCCC><td>&nbsp</td></tr>
+<tr bordercolor=#CCCCCC7><td><span class="tabletext">Signed:.............................Quality Manager;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbspStamp.........................Date:.......................</td></tr>
+<tr bordercolor=#CCCCCC><td>&nbsp</td></tr>
+</table>
+<?php 
+   //if (preg_match("/Magellan Aerospace/", $myrow[4]))
+// Added Verdict also as per client req (VPD on phone) on July 15, 2010
+   if (preg_match("/Magellan Aerospace/", $myrow[4])  || preg_match("/Verdict/", $myrow[4]))
+   {
+?>
+<td>
+<table border=1 cellspacing=0 cellpadding=0 rules=none>
+<tr bordercolor=#CCCCCC><td valign="top">
+<span class="tabletext">
+Mag/OFSPG/0012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ISS B
+<br>
+May-08
+</td</tr>
+<tr bordercolor=#CCCCCC><td>&nbsp</td></tr>
+<tr bordercolor=#CCCCCC><td>&nbsp</td></tr>
+</table>
+
+<?php
+if($myrow[16] != 'INDIA' && $myrow[16] != 'IND' && $myrow[16] != 'Ind' && $myrow[16] != 'India')
+{
+?>
+<tr><td colspan=2 align=center><span class="heading"><u>PART MANUFACTURED BY INDIAN SUPPLIER</u></td></tr>
+<tr><td colspan=2 align=center><span class="heading"></td></tr>
+<tr><td colspan=2 align=center><span class="heading"></td></tr>
+<?php
+}
+?>
+</table>
+<table border=1 bgcolor="#FFFFFF" width=100% cellspacing=0 cellpadding=6 rule=all bordercolor="#000000">
+<tr class="bgcolor2" bordercolor="#CCCCCC">
+            <td colspan=2><span class="labeltext"><?php printf('%s',$myrow[37]);?></td>
+            <td colspan=4><span class="fmttext"><?php printf('%s',$myrow[38]);?></td>
+            <td colspan=11><span class="labeltext">CIM TOOLS PRIVATE LIMITED</td>
+</tr>
+</table>
+<br>
+
+</table>
+<?php
+}
+?>
+</table>
+</body>
+</html>

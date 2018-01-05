@@ -1,0 +1,15 @@
+Issues for FLuenterp Ripple
+================================
+1. modify custpo to pull quote ref using get quote button.
+2. verify price in custpo to quote price.
+3. qoute modification to be done match custpo.
+
+Karthick
+----------------------
+4. custpo to be pending state on entry - will go to open on approval. (DONE)
+5. RMPO remove compliance and scoring related fields. (DONE)
+6. RMPO Approval to be done by stores.
+7. Quote need add negotiation.
+8. Add QA inspected column into line item of assy wo. - provide check box and date.
+9. QA milesstone of FI completed should be done only after 8 line completed
+10 . Add notes field to assy wo. (DONE)

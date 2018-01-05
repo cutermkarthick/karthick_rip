@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="tabs.css">
+<table  width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr bgcolor="#FFFFFF">
+
+<td bgcolor="#FFFFFF">
+<div id="tabsF" align="center">
+<ul align="center">
+
+<li><a id="prodnEntry" href="prodnEntry.php"><span>OPERATOR</span></a></li>
+<li><a id="oper_eff_stat" href="oper_eff_stat.php"><span>EFFICIENCY</span></a></li>
+<li><a id="reports" href="prodshift_record.php"><span>PRODUCTION RECORD</span></a></li>
+</ul>
+</div>
+</td>
+</tr>
+
+<script>
+function createTab(pass)
+{
+document.getElementById(pass).parentNode.id='current';
+}
+</script>
+</table>

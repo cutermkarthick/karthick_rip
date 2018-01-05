@@ -1,0 +1,835 @@
+<?php
+//==============================================
+// Author: FSI                                 =
+// Date-written: June 20, 2010                 =
+// Filename: reports.php                       =
+// Copyright of Badari Mandyam, FluentSoft     =
+// Revision: v1.0 OMS                          =
+// Reports                                     =
+//==============================================
+session_start();
+header("Cache-control: private");
+
+if ( !isset ( $_SESSION['user'] ) )
+{
+     header ( "Location: login.php" );
+}
+// Includes
+include_once('classes/loginClass.php');
+include('classes/displayClass.php');
+
+$userid = $_SESSION['user'];
+// $dept = $_SESSION['department'];
+$_SESSION['pagename'] = 'reports';
+$page = "Reports";
+//session_register('pagename');
+$newlogin = new userlogin;
+$newlogin->dbconnect();
+$newdisplay = new display;
+$userrole = $_SESSION['userrole'];
+$usertype = $_SESSION['usertype'];
+$dept = $_SESSION['department'];
+
+?>
+<script language="javascript" src="scripts/mouseover.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<html>
+<head>
+<title>List of Reports</title>
+</head>
+
+<body leftmargin="0"topmargin="0" marginwidth="0">
+<?php
+include('header.html');
+?>
+
+<!-- <table width=100% cellspacing="0" cellpadding="6" border="0">
+
+<tr><td>
+<table width=100% border=0 cellspacing="0" cellpadding="0">
+    <tr>
+
+        <td><span class="welcome"><b>Welcome <?php echo $userid?></b></td>
+        <td align="right">&nbsp;
+        <a href="exit.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image16','','images/logout_mo.gif',1)"><img name="Image16" border="0" src="images/logout.gif"></a></td>
+
+    </tr>
+</table>
+
+
+<table width=100% border=0 cellpadding=0 cellspacing=0  >
+	<tr><td>
+
+	</td></tr>
+	<tr>
+	<td>
+<?php 
+$newdisplay->dispLinks('');
+?>
+</td></tr>
+</table>
+<table width=100% border=0 cellpadding=0 cellspacing=0>
+			<tr bgcolor="DEDFDE">
+  				<td width="6"><img src="images/spacer.gif " width="6"></td>
+				<td bgcolor="#FFFFFF"> -->
+
+
+ <table border=2 bgcolor="#00DDFF" align="center" width="100%"  cellspacing=1 cellpadding=3>
+  <tr bgcolor="#ECE5B6">
+<td align="left" colspan="3"><span class="heading"><center><b>List of Reports</b></center></td>
+</tr>
+ <tr bgcolor="#FFFFFF">
+ <td colspan="3">
+<table width="100%" border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="400px"  cellspacing=1 cellpadding=3 class="stdtable1">
+ 
+  
+  <tr bgcolor="#ECE5B6">
+<td align="left" colspan="3"><span class="heading"><center><b>Status reports</b></center></td>
+</tr>
+  <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="dashboard.php">HEARTBEAT</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Company Pulse at a glance </td> </tr>
+
+
+<tr>
+    <td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crn_status.php">WO Status(Only FI Stage)</a></b></td>
+    <td bgcolor="#FFFFFF"><span class="heading">WO Status at a Glance including Accepted &
+                Rejected Quantities for matched Partnums between WO and Cust PO</td>
+                </tr> 
+
+
+
+
+ </td></tr>
+ <!-- <tr bgcolor="#FFFFFF">
+ <td valign='top'>
+<br>
+ <table border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="400px"  cellspacing=1 cellpadding=3>
+<?php
+     if ($usertype == 'EMPL')
+     {
+	 if ($userrole == 'SU' && $dept == 'Sales')
+     {?>
+
+	<tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>Efficiency Reports</b></td>
+    </tr>
+    <tr>
+	<td  bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="qa4efficiency_status.php">QA Efficiency </a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">QA Efficiency Status - shows QA efficiency based on PRN </td>
+    </tr> -->
+	 <!--<tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="prodn_efficiency.php">Machine Utilization efficiency</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows Efficiency % for each Machine.  </td>
+    </tr>-->
+	<!--  <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="prodn_performance.php">Machine Utilization Performance</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows Performance for each Machine (same as 2 but with Pie).  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="product_performance.php">Product Performance-Table</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Compares Actual Running & Setting Times to Master data
+             for each WO(only Fi stage in Part Status under the WO).</td>
+    </tr> -->
+   <!-- <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>5</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="operator_efficiency.php">Operator Efficiency</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Compares Actual Running & Setting Times to Master data
+             for each Operator</td>
+    </tr> -->
+     <!-- <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="oper_eff_stat.php">Operator Efficiency Status</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows the details of the operator</td>
+    </tr>
+	<tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>5</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="qaeffrep.php">QA Efficiency</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">QA Efficiency (WO-wise)</td>
+    </tr>
+
+	</table>
+
+   <table border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="400px"  cellspacing=1 cellpadding=3>
+   <tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>Dispatch Reports</b></td>
+    </tr>
+    <tr>
+	<td  bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+	<tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="cofcreport.php">Cofc report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Dispatch Summary report</td>
+    </tr>
+	<tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="dnreport.php">DN Summary report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">DN Summary report</td>
+    </tr>
+
+	</table>
+	</td>
+	<td bgcolor="#FFFFFF" valign='top'>
+   <br/>
+   <table border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="400px"  cellspacing=1 cellpadding=3>
+   <tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>Status Reports</b></td>
+    </tr>
+    <tr>
+	<td  bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+  <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crn_status.php">WO Status(Only FI Stage)</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">WO Status at a Glance including Accepted &
+                Rejected Quantities for matched Partnums between WO and Cust PO</td>
+                </tr> 
+                <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="womilestonerep.php">WO Milestone Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Stage Wise WO Approval
+                </td>
+                </tr>
+
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrn_status.php">Stock Status by GRN</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock Status - provides stock status based on
+                GRN or RM Spec or RM Type (uses all stage Returns)  </td>
+    </tr> -->
+   <!-- <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrn_quar.php">Stock Status by Quarantined GRN</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock Status - provides stock status based on
+                GRN or RM Spec or RM Type (uses all stage Returns) for Quarantined GRN  </td>
+    </tr>
+	-->
+	  <tr bgcolor="#ECE5B6">
+<td align="left" colspan="3"><span class="heading"><center><b>Stock Reports</b></center></td>
+</tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crnreport_new.php">PRN Stock Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows PRN-wise Stock Details  </td>
+    </tr>
+     <tr>
+    <td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrn_status.php">Stock Status by GRN</a></b></td>
+    <td bgcolor="#FFFFFF"><span class="heading">GRN Stock Status - provides stock status based on
+                GRN or RM Spec or RM Type (uses all stage Returns)  </td>
+    </tr>
+
+
+    <tr>
+    <td bgcolor="#FFFFFF"><span class="heading"><b>5</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrn_bo.php">GRN B/O & Cons</a></b></td>
+    <td bgcolor="#FFFFFF"><span class="heading">GRN Stock of Bought out and Consummables  </td>
+    </tr>
+
+
+    <tr>
+    <td bgcolor="#FFFFFF"><span class="heading"><b>6</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="rmstockbycrn.php">RM Stock Report</a></b></td>
+    <td bgcolor="#FFFFFF"><span class="heading">RM Stock  with Cost </td>
+    </tr>
+
+   <!--  <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>5</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crnschedulereport.php">PRN-Schedule Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows PRN-wise Schedule</td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>6</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrn_bo.php">GRN B/O & Cons</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock of Bought out and Consummables  </td>
+    </tr> -->
+	   
+	<tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>7</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="prnoutlook.php">PRN Outlook</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">PRN - Schedule vs Actual </td>
+    </tr>
+	  <tr bgcolor="#ECE5B6">
+<td align="left" colspan="3"><span class="heading"><center><b>Performance reports</b></center></td>
+</tr>
+
+	 <tr>
+    <td bgcolor="#FFFFFF"><span class="heading"><b>8</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="prodn_performance.php">Machine Utilization Performance</a></b></td>
+    <td bgcolor="#FFFFFF"><span class="heading">Shows Performance for each Machine  </td>
+    </tr>
+<tr>
+    <td bgcolor="#FFFFFF"><span class="heading"><b>9</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="product_performance.php">Product Performance-Table</a></b></td>
+    <td bgcolor="#FFFFFF"><span class="heading">Compares Actual Running & Setting Times to Master data
+             for each WO(only Fi stage in Part Status under the WO).</td>
+    </tr>
+ <tr>
+    <td bgcolor="#FFFFFF"><span class="heading"><b>10</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="prodshift_record.php">Production Record</a></b></td>
+    <td bgcolor="#FFFFFF"><span class="heading">Shows Shiftwise Production Record for each Machine.  </td>
+    </tr>
+
+     <!-- </table>
+     </td>
+	<td bgcolor="#FFFFFF" valign='top'>
+   <br/>
+   <table border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="400px"  cellspacing=1 cellpadding=3>
+   <tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>NC Reports</b></td>
+    </tr>
+    <tr>
+	<td  bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+
+
+
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="qanc_report.php">QA NC Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows QA NC Reports  </td>
+    </tr>
+     <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b>QA NC Chart</b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows QA NC Chart</td>
+    </tr>
+     <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crr_report.php">CRR report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows CRR Report</td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="ontime_report.php">OTIF report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows OTIF Report</td>
+    </tr>
+    </table>
+    <table border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="400px"   cellspacing=1 cellpadding=3>
+   <tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>Informative Reports</b></td>
+    </tr>
+    <tr>
+	<td  bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="timeMaster_report.php">Time Master Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows Time Master Report PRN wise</td>
+    </tr> -->
+ <!--<tr>
+    <td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+    <td bgcolor="#FFFFFF"><span class="heading"><b><a href="dn_report.php">DN Report</a></b></td>
+    <td bgcolor="#FFFFFF"><span class="heading">Shows DN Report CRN wise</td>
+    </tr>-->
+    <!-- <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="prodshift_record.php">Production Record</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows Shiftwise Production Record for each Machine.  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="poRating.php">Purchasing PO Rating Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows purchasing po rating report quarterly</td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="productionRecord.php">Production Record</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows Shiftwise Production Record& WO details for each Machine.  </td>
+    </tr>
+    </td>
+	</tr>
+	</table>
+    </td>
+	</tr>
+	</table>
+ -->
+<!-- <table border=0 bgcolor="#DFDEDF" align="center" width="100%"  cellspacing=1 cellpadding=3>
+    <tr>
+        <td  bgcolor="#A5EEFD" colspan=10 align="center"><span class="pageheading"><b>Discrepancy Report</b></td>
+    </tr>
+    <tr>
+ 	    <td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="discrepancyReport.php">Discrepancy Report</a></b></td>
+  	    <td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="masterDiscrepancy.php">Master Discrepancy Report</a></b></td>
+   	    <td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="wonc_rej.php">WO-NC Discrepancy Report</a></b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="wofiqtyReport.php">WO-FI QTY Discrepancy Report</a></b></td>
+	    <td bgcolor="#FFFFFF"><span class="heading"><b>5</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="wo2cofc.php">WO vs CofC</a></b></td>
+
+    </tr>
+   </table> -->
+<!-- <!-- <!-- <table border=0 bgcolor="#DFDEDF" align="center" width="100%"  cellspacing=1 cellpadding=3>
+	<tr>
+        <td  bgcolor="#A5EEFD" colspan=3 align="center"><span class="pageheading"><b>Reports for Directors</b></td>
+    </tr>
+    <tr bgcolor="#FFFFFF">
+ <td valign='top'>
+<br>
+ <table border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="600px"  cellspacing=1 cellpadding=3>
+ <tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>Stock Reports</b></td>
+    </tr>
+  <tr>
+	<td width=7% bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="wipreport.php">WIP Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">WIP- provides cost wise report for Work In Progress</td>
+    </tr>
+    <tr>
+    <td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+    <td bgcolor="#FFFFFF"><span class="heading"><b><a href="dn_report.php">DN Report</a></b></td>
+    <td bgcolor="#FFFFFF"><span class="heading">Shows DN Report PRN wise</td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="fg.php">Finished Goods Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Finished Goods - provides cost wise report
+                for finished goods(work orders)  </td>
+    </tr>
+    <tr>
+ 	<!--<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrn4dir_status.php">Stock Status by GRN (with Cost)</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock Status - provides stock status based on
+                GRN or RM Spec or RM Type (uses all stage Returns)  </td>
+    </tr> -->
+    
+   <!--  <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="rmstockbycrn.php">RM Stock Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">RM Stock  with Cost </td>
+    </tr>
+    
+
+     <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>5</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrnnew.php">Stock GRN (WO Date Wise)</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows qty issued and balance based on WO date </td>
+    </tr>
+    </td>
+ </tr></table>
+  <td valign='top'>
+<br>
+ <table border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="600px"  cellspacing=1 cellpadding=3>
+ <tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>Other Reports</b></td>
+    </tr>
+  <tr>
+	<td width=7% bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crn_cost.php">EPS</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows Shiftwise PRN cost for each Machine.  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crn_efficiency.php">PRN Efficiency</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows PRN Efficiency</td>
+    </tr>
+     <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crncostreport.php">PRN Cost Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">PRN report with cost</td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stock_costReport.php">Auditors Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock Status - provides stock status based on
+                GRN or RM Spec or RM Type (uses all stage Returns)  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>5</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="grnReport.php">GRN  Report with Invoice</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock  with Invoice </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>6</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="wip_timeReport.php">WIP Machine Wise Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">WIP stock report machine wise </td>
+    </tr>
+    </td></tr>
+ </table>
+ </tr></table> 
+ -->
+    <!--<tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crn_cost.php">EPS</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows Shiftwise CRN cost for each Machine.  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crn_efficiency.php">CRN Efficiency</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows CRN Efficiency</td>
+    </tr>
+     <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crncostreport.php">CRN Cost Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">CRN report with cost</td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="wipreport.php">WIP Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">WIP- provides cost wise report for Work In Progress</td>
+    </tr>
+    <tr>
+    <td bgcolor="#FFFFFF"><span class="heading"><b>5</b></td>
+    <td bgcolor="#FFFFFF"><span class="heading"><b><a href="dn_report.php">DN Report</a></b></td>
+    <td bgcolor="#FFFFFF"><span class="heading">Shows DN Report CRN wise</td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>6</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="fg.php">Finished Goods Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Finished Goods - provides cost wise report
+                for finished goods(work orders)  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>7</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrn4dir_status.php">Stock Status by GRN (with Cost)</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock Status - provides stock status based on
+                GRN or RM Spec or RM Type (uses all stage Returns)  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>8</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stock_costReport.php">Auditors Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock Status - provides stock status based on
+                GRN or RM Spec or RM Type (uses all stage Returns)  </td>
+    </tr>
+    <!--<tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>9</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crnschedule_new.php">CRN Schedule</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows CRN-wise Schedule   </td>
+    </tr>  -->
+   <!-- <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>10</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="grnstockReport.php">RM Stock Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">RM Stock  with Cost </td>
+    </tr>
+     <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>11</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="grnReport.php">GRN  Report with Invoice</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock  with Invoice </td>
+    </tr>
+     <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>12</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="wip_timeReport.php">WIP Machine Wise Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">WIP stock report machine wise </td>
+    </tr>
+     <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>13</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrnnew.php">Stock GRN (WO Date Wise)</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows qty issued and balance based on WO date </td>
+    </tr>    -->
+	<!--</td>
+	</tr> -->
+
+
+<?php
+    }
+     else if ($userrole=='RU' && $dept=='Assembly')
+    {
+?>
+
+   <table border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="100%"  cellspacing=1 cellpadding=3>
+   <tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>Status Reports</b></td>
+    </tr>
+    <tr>
+	<td  bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrn_status.php">Stock Status by GRN</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock Status - provides stock status based on
+                GRN or RM Spec or RM Type (uses all stage Returns)  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crnreport_new.php">PRN-wise Stock Details Report(New)</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows PRN-wise Stock Details  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crnschedulereport.php">PRN-Schedule Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows PRN-wise Schedule  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrn_bo.php">GRN B/O & Cons</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock of Bought out and Consummables  </td>
+    </tr>
+	
+        </table>
+
+<?php
+ }
+
+else
+ {
+?>
+    <tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>Efficiency Reports</b></td>
+    </tr>
+    <tr>
+	<td  bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="qa4efficiency_status.php">QA Efficiency </a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">QA Efficiency Status - shows QA efficiency based on PRN </td>
+    </tr>
+	 <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="prodn_efficiency.php">Machine Utilization efficiency</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows Efficiency % for each Machine.  </td>
+    </tr>
+    </tr>
+	 <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="prodn_performance.php">Machine Utilization Performance</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows Performance for each Machine (same as 2 but with Pie).  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="product_performance.php">Product Performance-Table</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Compares Actual Running & Setting Times to Master data
+             for each WO(only Fi stage in Part Status under the WO).</td>
+    </tr>
+   <!-- <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>5</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="operator_efficiency.php">Operator Efficiency</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Compares Actual Running & Setting Times to Master data
+             for each Operator</td>
+	</tr>-->
+	<tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>6</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="oper_eff_stat.php">Operator Efficiency Status</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows the details of the operator</td>
+    </tr>
+	<tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>7</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="qaeffrep.php">QA Efficiency</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">QA Efficiency (WO-wise)</td>
+    </tr>
+	</table>
+   <table border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="400px"  cellspacing=1 cellpadding=3>
+   <tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>Dispatch Reports</b></td>
+    </tr>
+    <tr>
+	<td  bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+	<tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="cofcreport.php">Cofc report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Dispatch Summary report</td>
+    </tr>
+	<tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="dnreport.php">DN Summary report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">DN Summary report</td>
+    </tr>
+
+	</table>
+	</td>
+
+	<td bgcolor="#FFFFFF" valign='top'>
+   <br>
+   <table border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="400px"  cellspacing=1 cellpadding=3>
+   <tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>Status Reports</b></td>
+    </tr>
+    <tr>
+	<td  bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crn_status.php">WO Status(Only FI Stage)</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">WO Status at a Glance including Accepted &
+                Rejected Quantities for matched Partnums between WO and Cust PO</td>
+                </tr>
+                <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="womilestonerep.php">WO Milestone Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Stage Wise WO Approval
+                </tr>
+
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrn_status.php">Stock Status by GRN</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock Status - provides stock status based on
+                GRN or RM Spec or RM Type (uses all stage Returns)  </td>
+    </tr>
+   <!--  <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrn_quar.php">Stock Status by Quarantined GRN</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock Status - provides stock status based on
+                GRN or RM Spec or RM Type (uses all stage Returns) for Quarantined GRN  </td>
+    </tr>
+	-->
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crnreport_new.php">PRN-wise Stock Details Report(New)</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows PRN-wise Stock Details  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>5</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crnschedulereport.php">PRN-Schedule Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows PRN-wise Schedule  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>6</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="stockgrn_bo.php">GRN B/O & Cons</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">GRN Stock of Bought out and Consummables  </td>
+    </tr>
+	 
+
+        </table>
+   </td>
+	<td bgcolor="#FFFFFF" valign='top'>
+   <br/>
+   <table border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="400px"  cellspacing=1 cellpadding=3>
+   <tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>NC Reports</b></td>
+    </tr>
+    <tr>
+	<td  bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+
+
+
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="qanc_report.php">QA NC Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows QA NC Reports  </td>
+    </tr>
+     <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b>QA NC Chart</b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows QA NC Chart</td>
+    </tr>
+     <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="crr_report.php">CRR report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows CRR Report</td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="ontime_report.php">OTIF report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows OTIF Report</td>
+    </tr>
+    </td>
+	</tr>
+	</table>
+	 <table border=0 style="border:1px solid #000000;"  bgcolor="#DFDEDF" width="400px"   cellspacing=1 cellpadding=3>
+   <tr>
+    <td bgcolor="#A5EEFD" colspan='3' align='center'><span class="tabletext"><b>Informative Reports</b></td>
+    </tr>
+    <tr>
+	<td  bgcolor="#ECE5B6"><span class="heading"><b>Sl No.</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Title</b></td>
+    <td bgcolor="#ECE5B6"><span class="heading"><b>Report Description</b></td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="timeMaster_report.php">Time Master Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows Time Master Report PRN wise</td>
+    </tr>
+ <tr>
+    <td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+    <td bgcolor="#FFFFFF"><span class="heading"><b><a href="dn_report.php">DN Report</a></b></td>
+    <td bgcolor="#FFFFFF"><span class="heading">Shows DN Report PRN wise</td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="prodshift_record.php">Production Record</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows Shiftwise Production Record for each Machine.  </td>
+    </tr>
+    <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="poRating.php">Purchasing PO Rating Report</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows purchasing po rating report quarterly</td>
+    </tr>
+     <tr>
+ 	<td bgcolor="#FFFFFF"><span class="heading"><b>5</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="productionRecord.php">Production Record</a></b></td>
+ 	<td bgcolor="#FFFFFF"><span class="heading">Shows Shiftwise Production Record& WO details for each Machine.  </td>
+    </tr>
+    </td>
+	</tr>
+	</table>
+    </table>
+	
+	<table border=0 bgcolor="#DFDEDF" align="center" width="100%"  cellspacing=1 cellpadding=3>
+    <tr>
+        <td  bgcolor="#A5EEFD" colspan=10 align="center"><span class="pageheading"><b>Discrepancy Report</b></td>
+    </tr>
+    <tr>
+ 	    <td bgcolor="#FFFFFF"><span class="heading"><b>1</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="discrepancyReport.php">Discrepancy Report</a></b></td>
+    	<td bgcolor="#FFFFFF"><span class="heading"><b>2</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="masterDiscrepancy.php">Master Discrepancy Report</a></b></td>
+      	<td bgcolor="#FFFFFF"><span class="heading"><b>3</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="wonc_rej.php">WO-NC Discrepancy Report</a></b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b>4</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="wofiqtyReport.php">WO-FI QTY Discrepancy Report</a></b></td>
+	    <td bgcolor="#FFFFFF"><span class="heading"><b>5</b></td>
+        <td bgcolor="#FFFFFF"><span class="heading"><b><a href="wo2cofc.php">WO vs CofC</a></b></td>
+
+    </tr></table>
+   
+<?php
+}
+}
+?>
+
+<!-- </td>
+<td width="6"><img src="images/spacer.gif " width="6"></td>
+</tr> -->
+<!-- <tr bgcolor="DEDFDE">
+<td width="6"><img src="images/box-left-bottom.gif"></td>
+<td><img src="images/spacer.gif " height="6"></td>
+<td width="6"><img src="images/box-right-bottom.gif"></td>
+</tr> -->
+</table>
+</form>
+</body>
+</html>

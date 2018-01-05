@@ -1,0 +1,15 @@
+ 
+body { background: #fff url(../images/bgmain.png);  color: #666; }
+body.login { background: #eee url(../images/bgmain.png); }
+body.errorpage { background-color: #666; }
+.loginbox { background: #eee;  }
+.loginbox h1 { color: #498519;  }
+.loginbox label { color: #117493; }
+.loginboxinner { 
+	background: #FFF;
+	 border: 1px solid #FFF; 
+}
+.loginbox input { 
+	  background: #eee url(../images/loginputbg.png) repeat-x top left; color: #444; 
+	-moz-box-shadow: 0 1px 0 #ccc; -webkit-box-shadow: 0 1px 0 #ccc; box-shadow: 0 1px 0 #ccc; 
+} 

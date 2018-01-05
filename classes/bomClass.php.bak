@@ -1,0 +1,602 @@
+<?
+//================================================
+// Author: FSI
+// Date-written = April 27,2010
+// Filename: bomClass.php
+// Maintains the class for BOMs
+// Revision: v1.0
+//================================================
+
+include_once('loginClass.php');
+
+class bom {
+
+    var $bomnum,
+        $bom_issue,
+        $crn,
+        $assy_part,
+        $title,
+        $issue,
+        $cos_no,
+        $cos_iss,
+        $drg_no,
+        $bomrevnum,
+        $eng_app,
+        $eng_app_by,
+        $eng_app_date,$create_date,$status,$partiss
+;
+
+    // Constructor definition
+    function bom() {
+        $this->bomnum = '';
+        $this->bom_issue = '';
+        $this->crn = '';
+        $this->assy_part = '';
+        $this->title = '';
+        $this->issue = '';
+        $this->cos_no = '';
+        $this->cos_iss = '';
+        $this->drg_no = '';
+        $this->bomrevnum = '';
+        $this->eng_app = '';
+        $this->eng_app_by = '';
+        $this->eng_app_date='';
+        $this->create_date='';
+        $this->status='';
+        $this->partiss='';
+
+     }
+
+    // Property get and set
+    function getbomnum() {
+           return $this->bomnum;
+    }
+
+    function setbomnum($reqbomnum) {
+           $this->bomnum = $reqbomnum;
+    }
+    function getbom_issue() {
+           return $this->bom_issue;
+    }
+
+    function setbom_issue($reqbom_issue) {
+           $this->bom_issue = $reqbom_issue;
+    }
+
+    function getcrn() {
+           return $this->crn;
+    }
+
+    function setcrn ($reqcrn) {
+           $this->crn = $reqcrn;
+    }
+
+    function getassy_part() {
+           return $this->assy_part;
+    }
+    function setassy_part ($reqassy_part) {
+           $this->assy_part = $reqassy_part;
+    }
+    function gettitle () {
+           return $this->title ;
+    }
+    function settitle  ($reqtitle) {
+           $this->title = $reqtitle;
+    }
+
+    function getissue() {
+           return $this->issue;
+    }
+
+    function setissue ($reqissue) {
+           $this->issue = $reqissue;
+    }
+    function getcos_no() {
+           return $this->cos_no;
+    }
+
+    function setcos_no($reqcos_no) {
+           $this->cos_no = $reqcos_no;
+    }
+     function getcos_iss() {
+           return $this->cos_iss;
+    }
+
+    function setcos_iss ($reqcos_iss) {
+           $this->cos_iss = $reqcos_iss;
+    }
+    
+    function getdrg_no() {
+           return $this->drg_no;
+    }
+
+    function setdrg_no ($reqdrg_no) {
+           $this->drg_no = $reqdrg_no;
+    }
+    function setbomrevnum ($bomrevnum) {
+           $this->bomrevnum = $bomrevnum;
+    }
+    function seteng_app($eng_app)
+    {
+           $this->eng_app = $eng_app;
+    }
+    function seteng_app_by($eng_app_by)
+    {
+           $this->eng_app_by = $eng_app_by;
+    }
+    function seteng_app_date($eng_app_date)
+    {
+           $this->eng_app_date = $eng_app_date;
+    }
+    
+    function setcreate_date($create_date)
+    {
+           $this->create_date = $create_date;
+    }
+    function setstatus($status)
+    {
+           $this->status = $status;
+    }
+    
+     function setpartiss($partiss)
+    {
+           $this->partiss = $partiss;
+    }
+
+
+    function addBOM()
+    {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "start transaction";
+        $result = mysql_query($sql);
+        $sql = "select nxtnum from seqnum where tablename = 'bom' for update";
+        $result = mysql_query($sql);
+        if(!$result) die("Seqnum access failed..Please report to Sysadmin. " . mysql_error());
+        $myrow = mysql_fetch_row($result);
+        $seqnum = $myrow[0];
+        $objid = $seqnum + 1;
+        $bomnum = "'" . $this->bomnum . "'";
+        $bom_issue = "'" . $this->bom_issue . "'";
+        $crn = "'" . $this->crn . "'";
+        $assy_part = "'" . $this->assy_part . "'";
+        $title ="'" . $this->title . "'";
+        $issue ="'" . $this->issue . "'";
+        $cos_no = "'" . $this->cos_no . "'";
+        $cos_iss= "'" . $this->cos_iss . "'";
+        $drg_no= "'" . $this->drg_no . "'";
+        $bomrevnum= "'" . $this->bomrevnum . "'";
+        $eng_app = "'" .$this->eng_app. "'";
+        $eng_app_by =  "'" .$this->eng_app_by. "'";
+        $eng_app_date = $this->eng_app_date ? "'" . $this->eng_app_date  . "'" : '0000-00-00';       
+        $partiss= "'" . $this->partiss . "'";
+		$status= "'" . $this->status . "'";
+		
+           $sql = "select * from bom where bomnum = $bomnum and bom_revnum= $bomrevnum and (status='Active'||status='Pending')";		
+           $result = mysql_query($sql);
+           if (!(mysql_fetch_row($result)))
+           {
+              $sql = "INSERT INTO
+			bom (recnum, bomnum, bom_issue, crn, assy_partnum, title, issue,cos_no,cos_iss,drg_no,bom_revnum,eng_app,eng_app_by,eng_app_date,status,create_date,partiss)
+                         VALUES
+			($objid, $bomnum, $bom_issue, $crn, $assy_part,$title, $issue,$cos_no,$cos_iss,$drg_no,$bomrevnum,$eng_app,$eng_app_by,$eng_app_date,$status,now(),$partiss)";
+            // echo $sql;
+              $result = mysql_query($sql);
+
+           // Test to make sure query worked
+              if(!$result) die("Insert to BOM didn't work..Please report to Sysadmin. " . mysql_error());
+            }
+            else
+            {
+                echo "<table border=1><tr><td><font color=#FF0000>";
+               die(" A BOM " . $bomnum . "  with rev number ". $bomrevnum." already exists. ");
+               echo "</td></tr></table>";
+            }
+           // }
+           /*  else
+            {
+                echo "<table border=1><tr><td><font color=#FF0000>";
+               die("A BOM " . $bomnum ." already exists. ");
+               echo "</td></tr></table>";
+            }*/
+            $sql = "update seqnum set nxtnum = $objid where tablename = 'bom'";
+            $result = mysql_query($sql);
+
+        // Test to make sure query worked
+        if(!$result) die("Seqnum insert query didn't work for BOM..Please report to Sysadmin. " . mysql_error());
+
+        $sql = "commit";
+        $result = mysql_query($sql);
+        if(!$result) die("Commit failed for BOM Insert..Please report to Sysadmin. " . mysql_error());
+        return $objid;
+     }
+
+    function updateBom($inpbomrecnum) {
+        $bomrecnum =$inpbomrecnum;
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "start transaction";
+
+        $bomnum ="'" . $this->bomnum . "'";
+        $bom_issue = "'" . $this->bom_issue . "'";
+        $crn = "'" . $this->crn . "'";
+        $assy_part = "'" . $this->assy_part . "'";
+        $title =  "'" . $this->title . "'";
+        $issue =  "'" . $this->issue . "'";
+        $cos_no =  "'" . $this->cos_no . "'";
+        $cos_iss= "'" . $this->cos_iss . "'";
+        $drg_no= "'" . $this->drg_no . "'";
+        $bomrevnum= "'" . $this->bomrevnum . "'";
+        $eng_app = "'" .$this->eng_app. "'";
+        $eng_app_by =  "'" .$this->eng_app_by. "'";
+        $eng_app_date = $this->eng_app_date ? "'" . $this->eng_app_date  . "'" : '0000-00-00';
+        $status =  "'" .$this->status. "'";
+        $create_date = $this->create_date ? "'" . $this->create_date  . "'" : '0000-00-00';
+        $partiss= "'" . $this->partiss . "'";
+        $sql = "update bom set
+                  bom_issue = $bom_issue,
+                  crn = $crn,
+                  assy_partnum  = $assy_part,
+                  title = $title,
+                  issue = $issue,
+                  cos_no = $cos_no,
+                  cos_iss = $cos_iss,
+                  drg_no = $drg_no,
+                  bom_revnum=$bomrevnum,
+                  eng_app =$eng_app,
+                  eng_app_by =$eng_app_by,
+                  eng_app_date=$eng_app_date,
+                  status=$status,
+                  create_date=$create_date,
+                  modified_date=now(),
+                  partiss=$partiss,
+				  bomnum=$bomnum
+               where recnum = $bomrecnum";
+     //echo $sql;
+           $result = mysql_query($sql);
+
+           // Test to make sure query worked
+           if(!$result) die("Update to BOM didn't work..Please report to Sysadmin. " . mysql_error());
+     }
+
+    function getBOMs($bomrecnum)
+    {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "select recnum,bomnum, bom_issue, crn, assy_partnum,
+                       title,issue, cos_no,cos_iss,drg_no,bom_revnum ,eng_app,eng_app_by,eng_app_date,status,create_date,partiss
+                FROM bom
+                where recnum=$bomrecnum";
+       //echo $sql;
+        $result = mysql_query($sql);
+        if(!$result) die("Access to BOM failed...Please report to SysAdmin. " . mysql_error());
+   // echo $result;
+        return $result;
+     }
+
+
+
+//function to get only BOMs where bomnum=partnum
+     function getBOM4parts()
+    {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "select b.recnum,b.bomnum, b.bomdate,c.name,b.bomdescr, b.type, b.bomamount
+                  from
+	                  bom b, company c
+                  where
+	            c.recnum = b.bom2customer and
+                b.bomnum=b.partnum";
+        $result = mysql_query($sql);
+        if(!$result) die("Access to BOM failed...Please report to SysAdmin. " . mysql_error());
+   // echo $result;
+        return $result;
+     }
+
+    function getBOM_summary($cond,$argoffset,$arglimit)
+    {
+        $wcond = $cond;
+        $offset = $argoffset;
+        $limit = $arglimit;
+
+       $sql = "select b.recnum,b.bomnum,b.bom_issue,b.crn,b.assy_partnum, 
+	                  b.crn,b.bom_revnum ,b.status,b.create_date
+                  from bom b where $wcond
+                  order by b.bomnum limit $offset, $limit";
+       echo "$sql";
+       $result = mysql_query($sql);
+       return $result;
+    }
+
+    function getBOMcount($cond,$argoffset, $arglimit)
+    {
+        $wcond = $cond;
+        $offset = $argoffset;
+        $limit = $arglimit;
+
+        $sql = "select count(*) as numrows from bom b where $wcond 
+               limit $offset, $limit";
+        //echo $sql;
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+
+        $result  = mysql_query($sql) or die('BOM count query failed');
+        $row     = mysql_fetch_array($result, MYSQL_ASSOC);
+        $numrows = $row['numrows'];
+        return $numrows;
+
+    }
+
+
+    function getBOMDetails($inpbomrecnum)
+    {
+        $bomrecnum = "'" . $inpbomrecnum . "'";
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "select b.bomnum, b.type, b.bomdescr,
+                   b.bomdate, b.bomamount,b.status,c.name, e1.fname,e2.fname,b.recnum,b.bom2customer,b.bom2aeowner,
+                   b.bom2seowner,b.link2wo,w.wonum,b.link2quote,q.id,e1.lname,e2.lname,b.makebuy,b.workcenter
+                     from bom b, company c,employee e1,employee e2
+                       left join quote q on
+                           b.link2quote = q.recnum
+                       left join work_order w on
+                           b.link2wo = w.recnum
+
+               where c.recnum = b.bom2customer
+                    and   e1.recnum = b.bom2aeowner
+	                and  e2.recnum=b.bom2seowner
+	                and b.recnum=$bomrecnum";
+        $result = mysql_query($sql);
+        if(!$result) die("Access to BOM details failed...Please report to SysAdmin. " . mysql_error());
+        return $result;
+
+    }
+
+     function ftp_copy($source_file,$destination_file)
+     {
+	$ftp_server='ftp.fluentsoft.com';
+	$ftp_user='bmandyam@fluentsoft.com';
+	$ftp_password='dci1034';
+	$conn_id=ftp_connect($ftp_server);
+	$login_result=ftp_login($conn_id,$ftp_user,$ftp_password);
+	if (( !$conn_id ) || ( !$login_result ))
+	{
+		die("FTP connection Failed");
+	}
+	$upload=ftp_put($conn_id,$destination_file,$source_file,FTP_BINARY);
+	ftp_close($conn_id);
+	if(!$upload)
+	{
+		die("FTP copy has failed");
+	}
+
+    }
+    
+
+    
+     function getBom_assywo()
+    {
+       $sql = "select b.bomnum,b.bom_issue
+                 from bom b";
+      //echo "$sql";
+       $result = mysql_query($sql);
+       return $result;
+    }
+    
+    
+  function getassy_crn()
+    {
+       $newlogin = new userlogin;
+       $newlogin->dbconnect();
+       $sql = "select CIM_refnum,partname,drawing_num,drg_issue,cos,type,attachments,partnum from master_data
+                where (type = 'Assembly' || type = 'Kit') and
+				      status = 'Active'
+               order by CIM_refnum";
+       //echo "$sql";
+       $result = mysql_query($sql);
+       return $result;
+    }
+
+
+    function getbom_assyWo_partDetails($bomnum,$bomiss)
+    {
+       $newlogin = new userlogin;
+       $newlogin->dbconnect();
+       $sql = " select  bom_subassy.item_no as itn,bom_subassy.partnum,bom_subassy.partname, bom_subassy.partiss,'Sub Assembly',
+                       bom_subassy.crn,bom_subassy.qpa,bom_subassy.crn_type,''
+                   from bom b,bom_subassy_items bom_subassy
+                    where b.bomnum = '$bomnum'  and b.bom_revnum='$bomiss'
+                         and bom_subassy.link2bom=b.recnum  and b.status ='Active'
+                         UNION
+          select  bom_mfg.item_no as itn,bom_mfg.partnum,bom_mfg.partname, bom_mfg.partiss,'Manufactured',
+                       bom_mfg.crn,bom_mfg.qpa,bom_mfg.crn_type,''
+                   from bom b,bom_mfg_items bom_mfg
+                   where b.bomnum = '$bomnum' and b.bom_revnum='$bomiss'
+                         and bom_mfg.link2bom=b.recnum and b.status ='Active'
+                UNION
+               select  bom_bo.item_no as itn,bom_bo.partnum,bom_bo.descr, bom_bo.partiss,'Bought Out','',bom_bo.qpa,'',''
+                   from bom b,bom_bought_items bom_bo
+                   where b.bomnum = '$bomnum' and b.bom_revnum='$bomiss'
+                         and bom_bo.link2bom=b.recnum and b.status ='Active'
+                UNION
+               select  bom_co.item_no as itn,'',bom_co.descr,'','Consummables','',bom_co.qpa ,'',bom_co.spec
+                   from bom b,bom_consume bom_co
+                    where b.bomnum = '$bomnum' and b.bom_revnum='$bomiss'
+                         and bom_co.link2bom=b.recnum and b.status ='Active'";
+       //echo "$sql";
+       $result = mysql_query($sql);
+       return $result;
+    }
+    
+    function getbom_assyOper($bomnum,$bomiss)
+    {
+       $newlogin = new userlogin;
+       $newlogin->dbconnect();
+       $sql = "select bom_op.opn_num,bom_op.stn,bom_op.oper_desc,bom_op.signoff,bom_op.remarks
+               from bom b,bom_op_desc bom_op
+                where b.bomnum='$bomnum'  and b.bom_revnum='$bomiss'
+                and b.recnum = bom_op.link2bom   and b.`status` ='Active'
+               order by bom_op.recnum";
+      // echo "$sql";
+       $result = mysql_query($sql);
+       return $result;
+    }
+
+
+    function deleteBOM($bomrecnum) {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "delete from bom where recnum = $bomrecnum";
+        $result = mysql_query($sql);
+        if(!$result) die("Delete for bom failed...Please report to SysAdmin. " . mysql_error());
+      }
+      
+            function getbom4assyWopartDetails($bomnum,$crn_num,$bomiss)
+    {
+       $newlogin = new userlogin;
+       $newlogin->dbconnect();
+       $sql = "select  bom_mfg.item_no as itn,bom_mfg.partnum,bom_mfg.partname, bom_mfg.partiss,'Manufactured',
+       bom_mfg.crn,bom_mfg.qpa,bom_mfg.crn_type,''
+                   from bom b,bom_mfg_items bom_mfg
+                   where bom_mfg.link2bom=b.recnum and  b.crn='$crn_num'  and b.status ='Active' and b.bom_revnum='$bomiss'
+                UNION
+               select  bom_bo.item_no as itn,bom_bo.partnum,bom_bo.descr, bom_bo.partiss,'Bought Out','',bom_bo.qpa,'',''
+                   from bom b,bom_bought_items bom_bo
+                   where bom_bo.link2bom=b.recnum and b.crn='$crn_num' and b.status ='Active' and b.bom_revnum='$bomiss'
+                UNION
+               select  bom_co.item_no as itn,'',bom_co.descr,'','Consume','',bom_co.qpa,'',bom_co.spec
+                   from bom b,bom_consume bom_co
+                    where bom_co.link2bom=b.recnum and b.crn='$crn_num' and b.status ='Active' and b.bom_revnum='$bomiss'
+               order by itn";
+      // echo "$sql";
+       $result = mysql_query($sql);
+       return $result;
+    }
+    
+     function getbom_assykitWo_partDetails($bomnum,$bomiss)
+    {
+       $newlogin = new userlogin;
+       $newlogin->dbconnect();
+       $sql = "select  bom_subassy.item_no as itn,bom_subassy.partnum,bom_subassy.partname, bom_subassy.partiss,'Sub Assembly',
+                       bom_subassy.crn,bom_subassy.qpa,bom_subassy.crn_type
+                   from bom b,bom_subassy_items bom_subassy
+                   where b.bomnum = '$bomnum' and b.bom_revnum='$bomiss'
+                         and bom_subassy.link2bom=b.recnum and bom_subassy.crn_type='Assembly' and b.status ='Active'
+               order by itn";
+       //echo "$sql";
+       $result = mysql_query($sql);
+       return $result;
+    }
+    function updatebom4eng($bomrecnum)
+    {
+       $newlogin = new userlogin;
+        $newlogin->dbconnect();
+
+        $eng_app = "'" .$this->eng_app. "'";
+        $eng_app_by =  "'" .$this->eng_app_by. "'";
+        $eng_app_date = $this->eng_app_date ? "'" . $this->eng_app_date  . "'" : '0000-00-00';
+        $status = "'" .$this->status. "'";
+        
+        $sql = "UPDATE bom SET
+                       modified_date=now(),
+                       eng_app =$eng_app,
+                       eng_app_by =$eng_app_by,
+                       eng_app_date=$eng_app_date,
+                       status=$status
+        	    WHERE
+                       recnum = $bomrecnum";
+//echo $sql;
+        $result = mysql_query($sql);
+        if(!$result)
+                     {
+                     //header("Location:errorMessage.php?validate=Inv5");
+                     die("updatebom4eng failed for BOM...Please report to SysAdmin. " . mysql_error());
+                     }
+    }
+    
+     function addbomnotes($bomrecnum,$bomnotes)
+  {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        //Connect to database
+        $userid = $_SESSION['user'];
+        $link2user = "'" . $userid . "'";
+       // $userrecnum = $_SESSION['userrecnum'];
+        $bomnotes = "'" . $bomnotes . "'";
+        $sql = "INSERT INTO bom_notes (notes,notes2bom,create_date,notes2user)
+               VALUES ($bomnotes,$bomrecnum,now(),$link2user)";
+        //echo "$sql";
+        $result = mysql_query($sql);
+        // Test to make sure query worked
+        if(!$result) die("Insert of BOM Notes didn't work. " . mysql_error());
+  }
+    function getNotes($bomrecnum)
+    {
+      $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "select b.notes, DATE_ADD(b.create_date, INTERVAL '13:00' HOUR_MINUTE),
+                        e.fname
+                from bom_notes b, employee e, user u
+                where b.notes2bom=$bomrecnum and
+                      u.userid = b.notes2user and
+                      u.user2employee = e.recnum
+                order by b.create_date";
+        //echo "$sql";
+        $result = mysql_query($sql);
+        // Test to make sure query worked
+        if(!$result) die("Get Bom Notes didn't work. " . mysql_error());
+       return $result;
+    
+    }
+    function checkbom4assywo($bomnum)
+    {
+       $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "select assy.assy_wonum from assy_wo assy where assy.bomnum='$bomnum'";
+        //echo "$sql";
+        $result = mysql_query($sql);
+        // Test to make sure query worked
+        if(!$result) die("Get Bom Notes didn't work. " . mysql_error());
+       return $result;
+    }
+	    function set_prev_status($bomnum)
+    {
+       $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "update bom set status='Inactive' where bomnum='$bomnum'";
+        //echo "$sql";
+        $result = mysql_query($sql);
+        // Test to make sure query worked
+        if(!$result) die("Get Bom Notes didn't work. " . mysql_error());
+       return $result;
+    }
+	function getrework_assyWo_details($recnum)
+    {
+       $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "select  linenum,bom_type,itemno,crn_num4li,crn_type,partnum,issue,descr,qty,uom,qty_wo,qty_acc,
+						qty_rew,qty_ret,qty_rej,grn,exp_date,remarks
+				from assywo_li
+				where link2assywo='$recnum'";
+        //echo "$sql";
+        $result = mysql_query($sql);
+        // Test to make sure query worked
+        if(!$result) die("Get getrework_assyWo_details didn't work. " . mysql_error());
+       return $result;
+    }
+
+
+    function getAllBOMs()
+    {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "select *  FROM bom";
+        echo $sql;
+        $result = mysql_query($sql);
+        //if(!$result) die("Access to BOM failed...Please report to SysAdmin. " . mysql_error());
+        echo '----'.$result;
+        return $result;
+     }
+
+
+} // End bom class definition

@@ -1,0 +1,48 @@
+<HTML>
+<HEAD>
+    <TITLE>Print Page:</TITLE>
+<link rel="stylesheet" href="style.css">
+<script language="javascript">
+function loadData(){
+document.getElementById("chartdata").innerHTML=window.opener.document.getElementById("chartdata").innerHTML
+document.getElementById("details").innerHTML=window.opener.document.getElementById("details").innerHTML
+
+}
+
+</script>
+</HEAD>
+<BODY onload="javascript:loadData();">
+
+<table width=100% border=0>
+<tr><td><font style="Arial" size=5><center><b><A HREF="javascript:window.print()">Operator Efficiency</A></b></center></td</tr>
+<tr>
+
+<td>
+<img src="images/masthead.jpg" alt="CIM Tools" width="137" height="30" class="Masthead" />
+<img src="images/masthead2.jpg" alt="CIM Tools" width="137" height="30" 
+</td></tr>
+<table border=1>
+<tr>
+<td>
+<div id="chartdata">
+
+</div></td>
+<td width="40%" align="center" valign="center">
+<div id="details">
+
+</div>
+</table>
+</table>
+<table border=1 bgcolor="#DFDEDF" width=100% cellspacing=1 cellpadding=3>
+        <tr bgcolor="#FFFFFF">
+            <td colspan=2><span class="labeltext">F8401-S</td>
+            <td colspan=2><span class="labeltext">Rev No:1 dt July 7, 2010 (new operator eff stats)</td>
+		    <td colspan=2><span class="labeltext">This is ERP generated information - Signature not required</td>
+            <td colspan=2><span class="labeltext">CIMTOOLS PRIVATE LIMITED</td>
+        </tr>
+</table>
+</td></tr>
+
+</table>
+</BODY>
+</HTML>

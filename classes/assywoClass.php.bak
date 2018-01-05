@@ -1,0 +1,918 @@
+<?
+//================================================
+// Author: FSI
+// Date-written = April 27,2010
+// Filename: bomClass.php
+// Maintains the class for BOMs
+// Revision: v1.0
+//================================================
+
+include_once('loginClass.php');
+
+class assywo {
+
+    var $assywonum,
+        $assywodate,
+        $woqty,
+        $link2cust,
+        $ponum,
+        $poqty,
+        $crn,
+        $descr,
+        $drg_iss,
+        $drg_no,
+        $assypartnum,
+        $assypartiss,
+        $assywoqty,
+        $bomnum,
+        $bomiss,
+        $apsno,
+        $apsiss,
+        $cosno,
+		$sch_due_date,
+		$sch_revised_date,
+		$actual_ship_date,
+        $cust_po_line_num,
+        $status,
+		$mpsnumber,
+		$mps_rev,
+		$link2mps,
+		$fai_type,
+		$type_remarks,
+		$assy_type,
+		$rework_grn;
+
+    // Constructor definition
+    function assywo() {
+        $this->assywonum = '';
+        $this->assywodate = '';
+        $this->woqty = '';
+        $this->link2cust = '';
+        $this->ponum = '';
+        $this->poqty = '';
+        $this->crn = '';
+        $this->descr = '';
+        $this->drg_iss = '';
+        $this->drg_no = '';
+        $this->assypartnum = '';
+        $this->assypartiss = '';
+        $this->assywoqty = '';
+        $this->bomnum = '';
+        $this->bomiss = '';
+        $this->apsno = '';
+        $this->apsiss = '';
+        $this->cosno = '';
+        $this->sch_due_date = '';
+	    $this->sch_revised_date = '';
+		$this->actual_ship_date = '';
+		$this->cust_po_line_num='';
+		$this->status='';
+		$this->mpsnumber='';
+		$this->mps_rev='';
+		$this->link2mps='';
+		$this->fai_type='';
+		$this->type_remarks='';
+		$this->assy_type='';
+		$this->rework_grn='';
+     }
+
+    // Property get and set
+    function getassywonum() {
+           return $this->assywonum;
+    }
+
+    function setassywonum($reqassywonum) {
+           $this->assywonum = $reqassywonum;
+    }
+    function getassywodate() {
+           return $this->assywodate;
+    }
+
+    function setassywodate($reqassywodate) {
+           $this->assywodate = $reqassywodate;
+    }
+
+    function getwoqty() {
+           return $this->woqty;
+    }
+
+    function setwoqty ($reqwoqty) {
+           $this->woqty = $reqwoqty;
+    }
+
+    function getlink2cust() {
+           return $this->link2cust;
+    }
+    function setlink2cust($reqlink2cust) {
+           $this->link2cust = $reqlink2cust;
+    }
+    function getponum () {
+           return $this->ponum ;
+    }
+    function setponum  ($reqponum) {
+           $this->ponum = $reqponum;
+    }
+
+    function getpoqty() {
+           return $this->poqty;
+    }
+
+    function setpoqty ($reqpoqty) {
+           $this->poqty = $reqpoqty;
+    }
+    function getcrn() {
+           return $this->crn;
+    }
+
+    function setcrn($reqcrn) {
+           $this->crn = $reqcrn;
+    }
+     function getdescr() {
+           return $this->descr;
+    }
+
+    function setdescr($reqdescr) {
+           $this->descr = $reqdescr;
+    }
+
+    function getdrg_iss() {
+           return $this->drg_iss;
+    }
+
+    function setdrg_iss ($reqdrg_iss) {
+           $this->drg_iss = $reqdrg_iss;
+    }
+    
+    function getdrg_no() {
+           return $this->drg_no;
+    }
+
+    function setdrg_no ($reqdrg_no) {
+           $this->drg_no = $reqdrg_no;
+    }
+
+    
+    function getassypartnum() {
+           return $this->assypartnum;
+    }
+
+    function setassypartnum ($reqassypartnum) {
+           $this->assypartnum = $reqassypartnum;
+    }
+    function getassypartiss() {
+           return $this->assypartiss;
+    }
+
+    function setassypartiss ($reqassypartiss) {
+           $this->assypartiss = $reqassypartiss;
+    }
+    function getassywoqty() {
+           return $this->assywoqty;
+    }
+
+    function setassywoqty ($reqassywoqty) {
+           $this->assywoqty = $reqassywoqty;
+    }
+    
+    function getbomnum() {
+           return $this->bomnum;
+    }
+
+    function setbomnum ($reqbomnum) {
+           $this->bomnum = $reqbomnum;
+    }
+    function getbomiss() {
+           return $this->bomiss;
+    }
+
+    function setbomiss ($reqbomiss) {
+           $this->bomiss = $reqbomiss;
+    }
+    function getapsno() {
+           return $this->apsno;
+    }
+
+    function setapsno ($reqapsno) {
+           $this->apsno = $reqapsno;
+    }
+    function getapsiss() {
+           return $this->apsiss;
+    }
+
+    function setapsiss ($reqapsiss) {
+           $this->apsiss = $reqapsiss;
+    }
+    function getcosno() {
+           return $this->cosno;
+    }
+
+    function setcosno ($reqcosno) {
+           $this->cosno = $reqcosno;
+    }
+
+	 function getsch_due_date() {
+           return $this->sch_due_date;
+    }
+
+    function setsch_due_date ($reqsch_date) {
+           $this->sch_due_date = $reqsch_date;
+    }
+
+  function getac_ship_date() {
+           return $this->actual_ship_date;
+    }
+
+    function setac_ship_date ($reqac_ship_date) {
+           $this->actual_ship_date = $reqac_ship_date;
+    }
+
+
+	 function getship_rev_date() {
+           return $this->sch_revised_date;
+    }
+
+    function setship_rev_date ($reqship_rev_date) {
+           $this->sch_revised_date = $reqship_rev_date;
+    }
+    function setcust_po_line_num($cust_po_line_num)
+    {
+          $this->cust_po_line_num = $cust_po_line_num;
+    }
+    
+    function setstatus($status)
+    {
+          $this->status = $status;
+    }
+    
+    function setmpsnumber($mpsnumber)
+    {
+          $this->mpsnumber = $mpsnumber;
+    }
+    function setmpsrev($mps_rev)
+    {
+          $this->mps_rev = $mps_rev;
+    }
+    function setlink2mps($link2mps)
+    {
+          $this->link2mps = $link2mps;
+    }
+    
+    function setfai_type($fai_type)
+    {
+          $this->fai_type = $fai_type;
+    }
+    
+    function settype_remarks($type_remarks)
+    {
+          $this->type_remarks = $type_remarks;
+    }
+    function setassy_type($assy_type)
+    {
+          $this->assy_type = $assy_type;
+    }
+
+	function getrework_grn() {
+           return $this->rework_grn;
+    }
+
+    function setrework_grn($rework_grn) {
+           $this->rework_grn = $rework_grn;
+    }
+
+
+    function addAssywo()
+    {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "start transaction";
+        $result = mysql_query($sql);
+        $result = mysql_query($sql);
+        $sql = "select nxtnum from seqnum where tablename = 'assywo' for update";
+        $result = mysql_query($sql);
+        if(!$result) die("Seqnum access failed..Please report to Sysadmin. " . mysql_error());
+        $myrow = mysql_fetch_row($result);
+        $seqnum = $myrow[0];
+        $objid = $seqnum + 1;
+        $assywonum = "'" . $this->assywonum . "'";
+       /* if($assy_type=='Assembly')
+        {
+         $prefix = "A";
+        }
+        else
+        {
+         $prefix = "K";
+        } */
+        //$assywonum=$prefix.$objid;
+        $assydate = "'" . $this->assywodate . "'";
+        $crn = "'" . $this->crn . "'";
+        $woqty = $this->woqty?$this->woqty:0;
+        $link2cust ="'" . $this->link2cust . "'";
+        $ponum ="'" . $this->ponum . "'";
+        $poqty = $this->poqty?$this->poqty:0;
+        $descr= "'" . $this->descr . "'";
+        $drg_iss= "'" . $this->drg_iss . "'";
+        $drg_no= "'" . $this->drg_no . "'";
+        $assypartnum= "'" . $this->assypartnum . "'";
+        $assypartiss= "'" . $this->assypartiss . "'";
+        $assywoqty= $this->assywoqty?$this->assywoqty:0;
+        $bomnum = "'" . $this->bomnum . "'";
+        $bomiss= "'" . $this->bomiss . "'";
+        $apsno= "'" . $this->apsno . "'";
+        $apsiss= "'" . $this->apsiss . "'";
+        $cosno= "'" . $this->cosno . "'";
+	    $sch_date= $this->sch_due_date?"'" . $this->sch_due_date . "'":'0000-00-00';
+	    $rev_date=$this->sch_revised_date? "'" . $this->sch_revised_date . "'":'0000-00-00';
+	    $ship_date= $this->actual_ship_date?"'" . $this->actual_ship_date . "'":'0000-00-00';
+        $cust_po_line_num= "'" . $this->cust_po_line_num . "'";
+        $status= "'" . 'Open' . "'";
+        $mpsnumber="'". $this->mpsnumber ."'";
+        $mps_rev="'". $this->mps_rev ."'";
+        $link2mps = $this->link2mps?"'". $this->link2mps ."'":0;
+        $fai_type="'". $this->fai_type ."'";
+        $type_remarks="'". $this->type_remarks ."'";
+        $assy_type="'". $this->assy_type ."'";
+
+		$rework_grn="'". $this->rework_grn ."'";
+
+           $sql = "select * from assy_wo where assy_wonum = $assywonum";
+           $result = mysql_query($sql);
+           if (!(mysql_fetch_row($result)))
+           {
+              $sql = "INSERT INTO
+		  	  assy_wo (recnum,assy_wonum, assydate, woqty, crn, link2cust, ponum,poqty,assypartnum,assypartiss,
+                      assyqty,bomnum,bomiss,apsnum,apsiss,cosno,drgno,descr,drgiss,sch_due_date,revised_ship_date,
+					  actual_ship_date,format_num,format_rev,cust_po_line_num,status,mpsnumber,mps_rev,link2mps,fai,
+                      type_remarks,assy_type,rework_grn)
+                         VALUES
+			         ($objid,$assywonum, $assydate, $woqty, $crn,$link2cust, $ponum,$poqty,$assypartnum,
+                     $assypartiss,$assywoqty, $bomnum,$bomiss,$apsno,$apsiss,$cosno,$drg_no,$descr,$drg_iss,
+					 $sch_date,$rev_date,$ship_date,'F7035','Rev 1 dt 30 August, 2012 Process Details',$cust_po_line_num,$status,$mpsnumber,
+                     $mps_rev,$link2mps,$fai_type,$type_remarks,$assy_type,$rework_grn)";
+              //echo $sql;
+              $result = mysql_query($sql);
+
+           // Test to make sure query worked
+              if(!$result) die("Insert to Assy WO didn't work..Please report to Sysadmin. " . mysql_error());
+            }
+            else
+            {
+                echo "<table border=1><tr><td><font color=#FF0000>";
+               die("Assy WO# " . $assywonum . " already exists. ");
+               echo "</td></tr></table>";
+            }
+           $sql = "update seqnum set nxtnum = $objid where tablename = 'assywo'";
+           $result = mysql_query($sql);
+
+        // Test to make sure query worked
+        if(!$result) die("Seqnum insert query didn't work for assywo..Please report to Sysadmin. " . mysql_error());
+
+        // Test to make sure query worked
+        $sql = "commit";
+        $result = mysql_query($sql);
+        if(!$result) die("Commit failed for Assy WO Insert..Please report to Sysadmin. " . mysql_error());
+        return $objid;
+     }
+
+    function updateAssywo($assyrecnum) {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "start transaction";
+        $assydate = $this->assywodate?"'" . $this->assywodate . "'":'0000-00-00';
+        $crn = "'" . $this->crn . "'";
+        $woqty =$this->woqty?$this->woqty:0;
+        $link2cust ="'" . $this->link2cust . "'";
+        $ponum ="'" . $this->ponum . "'";
+        $poqty = "'" . $this->poqty . "'";
+        $descr= "'" . $this->descr . "'";
+        $drg_iss= "'" . $this->drg_iss . "'";
+        $drg_no= "'" . $this->drg_no . "'";
+        $assypartnum= "'" . $this->assypartnum . "'";
+        $assypartiss= "'" . $this->assypartiss . "'";
+        $assywoqty= "'" . $this->assywoqty . "'";
+        $bomnum = "'" . $this->bomnum . "'";
+        $bomiss= "'" . $this->bomiss . "'";
+        $apsno= "'" . $this->apsno . "'";
+        $apsiss= "'" . $this->apsiss . "'";
+        $cosno= "'" . $this->cosno . "'";
+        $sch_date= $this->sch_due_date?"'" . $this->sch_due_date . "'":'0000-00-00';
+	    $rev_date=$this->sch_revised_date? "'" . $this->sch_revised_date . "'":'0000-00-00';
+	    $ship_date= $this->actual_ship_date?"'" . $this->actual_ship_date . "'":'0000-00-00';
+        $cust_po_line_num= "'" . $this->cust_po_line_num . "'";
+        $mpsnumber="'". $this->mpsnumber ."'";
+        $mps_rev="'". $this->mps_rev ."'";
+	    $link2mps = $this->link2mps?$this->link2mps:0;
+	    $assy_type="'". $this->assy_type ."'";
+		$rework_grn="'". $this->rework_grn ."'";
+	    //$condition="'". $this->condition ."'";
+	    // $fai_type="'". $this->fai_type ."'";
+       // $type_remarks="'". $this->type_remarks ."'";
+        //echo $ship_date."*************";
+	      $status= "'" . $this->status . "'";
+
+        $sql = "update assy_wo set
+                  assydate = $assydate,
+                  crn = $crn,
+                  woqty = $woqty,
+                  link2cust = $link2cust,
+                  ponum = $ponum,
+                  poqty = $poqty,
+                  assypartnum  = $assypartnum,
+                  assypartiss = $assypartiss,
+                  assyqty = $assywoqty,
+                  bomnum = $bomnum,
+                  bomiss = $bomiss,
+                  apsnum = $apsno,
+                  apsiss = $apsiss,
+                  cosno = $cosno,
+                  drgno = $drg_no,
+                  descr = $descr,
+                  drgiss = $drg_iss,
+				  sch_due_date=$sch_date,
+				  revised_ship_date=$rev_date,
+				  actual_ship_date=$ship_date,
+				  cust_po_line_num=$cust_po_line_num,
+				  status=$status,
+                  mpsnumber=$mpsnumber,
+				  mps_rev=$mps_rev,
+				  link2mps=$link2mps,
+				  assy_type=$assy_type,
+				  rework_grn=$rework_grn
+
+               where recnum = $assyrecnum";
+       //echo $sql;
+           $result = mysql_query($sql);
+
+           // Test to make sure query worked
+           if(!$result) die("Update to Assy wo didn't work..Please report to Sysadmin. " . mysql_error());
+     }
+
+    function getAssyWos($recnum)
+    {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "select a.recnum,a.assy_wonum,a.assydate,a.crn,a.woqty,c.name,a.ponum,
+                       a.poqty,a.assypartnum,a.assypartiss,a.assyqty,a.bomnum,a.bomiss,
+                       a.apsnum,a.apsiss,a.cosno,a.drgno,a.descr,a.drgiss, c.recnum as crec,
+                       a.sch_due_date,a.revised_ship_date,a.actual_ship_date,a.format_num,
+                       a.format_rev,a.cust_po_line_num,a.status ,a.mpsnumber,a.mps_rev,a.link2mps,
+                       a.fai,a.type_remarks,a.assy_type,a.rework_grn
+                       FROM assy_wo a,company c
+                            where a.recnum=$recnum
+                                  and a.link2cust=c.recnum";
+       //echo $sql;
+        $result = mysql_query($sql);
+        if(!$result) die("Access to Assy WO failed...Please report to SysAdmin. " . mysql_error());
+       // echo $result;
+        return $result;
+     }
+
+    function getassyWo_summary($cond,$argoffset,$arglimit)
+    {
+        $wcond = $cond;
+        $offset = $argoffset;
+        $limit = $arglimit;
+
+       $sql = "select a.recnum,a.assy_wonum,a.assydate,a.assyqty,a.crn,a.bomnum,a.cust_po_line_num,
+		              a.status,a.fai,a.type_remarks,c.name,a.sch_due_date,a.revised_ship_date,a.actual_ship_date,
+		              a.ponum,a.assy_type
+                      from assy_wo a,company c
+                           where $wcond
+                                  and c.recnum=a.link2cust
+                                  limit $offset, $limit";
+      //echo "$sql";
+       $result = mysql_query($sql);
+       return $result;
+    }
+    
+      function getcustpos()
+     {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "select so.po_num,sum(soli.qty) from sales_order so,
+                    so_line_items soli where so.recnum=soli.link2so
+                    group by so.po_num
+                    order by so.po_num";
+       //echo "$sql";
+       $result = mysql_query($sql);
+       return $result;
+     }
+
+    function getassywocount($cond,$argoffset, $arglimit)
+    {
+        $wcond = $cond;
+        $offset = $argoffset;
+        $limit = $arglimit;
+
+        $sql = "select count(*) as numrows from assy_wo a,company c
+                        where $wcond
+                               and c.recnum=a.link2cust
+                               limit $offset, $limit";
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+
+        $result  = mysql_query($sql) or die('Assy WO Count query failed');
+        $row     = mysql_fetch_array($result, MYSQL_ASSOC);
+        $numrows = $row['numrows'];
+        return $numrows;
+    }
+
+
+     function getcim_bom($assy_type)
+     {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+		if($assy_type !='Rework')
+		 {
+        $sql = "select m.CIM_refnum as cim,b.bomnum,b.bom_revnum,m.partnum,
+		               m.attachments,m.drawing_num,m.drg_issue,m.cos,b.crn,
+		               NULL,m.mps_num,m.drawing_num,m.cos,m.machine_name,
+                       NULL,NULL,m.mps_rev as masterrev,m.treat as treatment,NULL ,b.title,NULL,NULL
+                       from master_data m,bom b
+                       where b.crn=m.CIM_refnum and
+							 m.status = 'Active' and
+							 m.revstat = 'Active' and
+							  m.type='$assy_type' and
+							  b.status='Active'
+                UNION
+                select m.CIM_refnum as cim,b.bomnum,b.bom_revnum, m.partnum,
+		               m.attachments,m.drawing_num,m.drg_issue,m.cos,b.crn,
+		               mp.mps_revision as rev,m.mps_num,m.drawing_num,m.cos,m.machine_name,
+                       NULL,NULL,m.mps_rev as masterrev,m.treat as treatment,mp.recnum as mpslink,b.title,NULL,NULL
+                       from master_data m,bom b,mps mp
+                       where b.crn=m.CIM_refnum and
+                             m.recnum = mp.link2master_data
+                             and mp.revstat = 'Active' and
+                             m.status = 'Active' and
+							  m.type='$assy_type' and
+							  b.status='Active'
+                order by cim";
+		 }
+		 else
+		 {
+             $sql = "select a.crn,bomnum,a.bomiss,a.assypartnum,a.attachments, a.drgno,a.drgiss,a.cosno,
+                            a.crn,NULL,a.mpsnumber,a.drgno,a.cosno,NULL,NULL,NULL,a.mps_rev,NULL,NULL,NULL,
+							g.grnnum,a.recnum
+                     from assy_wo a,grn g
+                     where a.assy_wonum=g.wo_ref  and g.grn_classif='Assy'";
+		 }
+       // echo "$sql";
+       $result = mysql_query($sql);
+       return $result;
+     }
+
+    function getBOMDetails($inpbomrecnum)
+    {
+        $bomrecnum = "'" . $inpbomrecnum . "'";
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "select b.bomnum, b.type, b.bomdescr,
+                   b.bomdate, b.bomamount,b.status,c.name, e1.fname,e2.fname,b.recnum,b.bom2customer,
+                   b.bom2aeowner,b.bom2seowner,b.link2wo,w.wonum,b.link2quote,q.id,e1.lname,e2.lname,
+                   b.makebuy,b.workcenter
+                     from bom b, company c,employee e1,employee e2
+                       left join quote q on
+                           b.link2quote = q.recnum
+                       left join work_order w on
+                           b.link2wo = w.recnum
+
+               where c.recnum = b.bom2customer
+                    and   e1.recnum = b.bom2aeowner
+	                and  e2.recnum=b.bom2seowner
+	                and b.recnum=$bomrecnum and b.status='Active'";
+        $result = mysql_query($sql);
+        if(!$result) die("Access to BOM details failed...Please report to SysAdmin. " . mysql_error());
+        return $result;
+
+    }
+
+     function ftp_copy($source_file,$destination_file)
+   {
+	$ftp_server='ftp.fluentsoft.com';
+	$ftp_user='bmandyam@fluentsoft.com';
+	$ftp_password='dci1034';
+	$conn_id=ftp_connect($ftp_server);
+	$login_result=ftp_login($conn_id,$ftp_user,$ftp_password);
+	if (( !$conn_id ) || ( !$login_result ))
+	{
+		die("FTP connection Failed");
+	}
+	$upload=ftp_put($conn_id,$destination_file,$source_file,FTP_BINARY);
+	ftp_close($conn_id);
+	if(!$upload)
+	{
+		die("FTP copy has failed");
+	}
+
+    }
+
+    function deleteBOM($bomrecnum) {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "delete from bom where recnum = $bomrecnum";
+        $result = mysql_query($sql);
+        if(!$result) die("Delete for bom failed...Please report to SysAdmin. " . mysql_error());
+      }
+      
+   function getwos4assywo($crn)
+   {
+     $newlogin = new userlogin;
+     $newlogin->dbconnect();
+     $sql = "select DISTINCT w.wonum,w.qty,w.recnum,w.crn_num,wps.cofc_num,wps.supplier_wo,wps.dn
+                    from work_order w
+                    left join wo_part_status wps on wps.link2wo=w.recnum
+                         where w.treatment='With Treatment' and
+                               w.`condition` !='Cancelled' and
+                               w.`condition` !='WO Cancelled' and
+                               (wps.stage='PostDN') and
+                               w.crn_num='$crn'";
+     $result = mysql_query($sql);
+     if(!$result) die("getwos4assywo failed...Please report to SysAdmin. " . mysql_error());
+     return $result;
+   
+   }
+   function getwos4assycrnwo($crn)
+   {
+     $newlogin = new userlogin;
+     $newlogin->dbconnect();
+     $sql = "select w.assy_wonum,w.assyqty,w.recnum,w.crn
+                    from assy_wo w
+                         where
+                               w.`status`='Open' and
+                               w.crn='$crn'";
+                              // echo $sql."----";
+     $result = mysql_query($sql);
+     if(!$result) die("getwos4assycrnwo failed...Please report to SysAdmin. " . mysql_error());
+     return $result;
+
+   }
+
+   function getgrns4assywo($partnum)
+   {
+     $newlogin = new userlogin;
+     $newlogin->dbconnect();
+     $sql = "select g.grnnum,g.batch_num,g.recnum
+                    from grn g,grn_li gli
+                         where(g.grntype='Consummables' || g.grntype='Boughtout') and
+                              (g.status='Open'|| g.status ='' || g.status is null) and
+                               gli.link2grn=g.recnum and
+                               g.partnum='$partnum' and
+                               g.approved='yes'";
+     $result = mysql_query($sql);
+     if(!$result) die("getgrns4assywo failed...Please report to SysAdmin. " . mysql_error());
+     return $result;
+
+   }
+   
+   function getwoqty4custpo($ponum,$crnnum,$line_num) {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+         $sql = "select sum(wo.assyqty)
+                 from  assy_wo wo
+				 where
+                       wo.ponum='$ponum' and
+					   wo.crn='$crnnum' and
+					   wo.`status` != 'Cancelled' and
+                       (case when (wo.cust_po_line_num != '' && wo.cust_po_line_num is not null)
+                             then wo.cust_po_line_num = '$line_num' else true end)
+                       group by wo.ponum";
+					   //echo $sql;
+        $result = mysql_query($sql);
+         if(!$result) {
+           echo "Query failed for woqty " . mysql_error();
+           die("Please report to Sysadmin. ");
+        }
+        //echo "$sql";
+        return $result;
+
+     }
+     
+      function getrejqty4custpo($ponum,$crnnum,$line_num) {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+         $sql = "select sum(wps.rej),sum(wps.ret)
+                 from  assy_part_status wps,
+				       assy_wo wo
+				 where wo.recnum=wps.link2assywo  and
+					   wo.`status` != 'Cancelled' and
+				      (wps.stage = 'final' or wps.stage = 'Final'
+						or wps.stage = 'FINAL' or wps.stage = 'fi' or
+                        wps.stage = 'FI' or wps.stage = 'Fi') and
+                       wo.ponum='$ponum' and
+					   wo.crn='$crnnum' and
+					  (case when (wo.cust_po_line_num != '' && wo.cust_po_line_num is not null)
+                             then wo.cust_po_line_num = '$line_num' else true end)
+
+                       group by wo.ponum ";
+		//echo $sql;
+        $result = mysql_query($sql);
+         if(!$result) {
+           echo "Query failed for rejqty " . mysql_error();
+           die("Please report to Sysadmin. ");
+        }
+        //echo "$sql";
+        return $result;
+
+     }
+     
+     function getpos($cim_refnum,$partnum,$woclassif) {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+
+            $sql = "select ar.cust_ponum as ponum, ar.po_date, arli.qty,
+                       c.name,c.recnum,arli.crn,
+					   '','','',
+					   arli.qty,arli.crn,arli.line_num,arli.bomiss,arli.bomref
+					  from assy_review_li arli,
+					        company c,
+                            assy_review ar
+					where
+					 ar.customer = c.recnum and
+                     arli.link2assyreview = ar.recnum and
+                     arli.crn='$cim_refnum'and
+                     ar.status='Open'
+		     order by ponum,arli.line_num";
+
+      //echo $sql;
+        $result = mysql_query($sql);
+        return $result;
+     }
+     
+     function getassywoqty4grn() {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql2 = "select w.grn, (sum(w.qty_wo))
+                       from assywo_li w, assy_wo
+                 where assy_wo.recnum = w.link2assywo and
+	               assy_wo.assy_type != 'Rework' and
+		       assy_wo.status != 'Cancelled'
+                 group by w.grn";
+        //echo $sql2;
+        $result2 = mysql_query($sql2);
+        if(!$result2) die("get all grns failed for select..Please report to Sysadmin. " . mysql_error());
+        return $result2;
+      }
+      
+       function getallgrns4assy($partnum)
+      {
+        //echo $rm_type;
+        //echo $rm_spec;
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $userid = $_SESSION['user'];
+        $sql1 = "select  g.recnum, g.grnnum,g.batch_num, sum(gli.qty_to_make) as qtm,
+                         g.crn,g.raw_mat_type,g.raw_mat_spec,gli.partnum ,g.grntype,gli.expdate
+                       from grn g, grn_li gli
+                       where
+                     g.recnum = gli.link2grn and
+		             g.grntype != 'Quarantined' and
+		             g.status != 'Closed' and
+		             g.status != 'Cancelled' and
+		             g.status != 'Pending' and
+                     (g.grntype='Boughtout')
+                       group by g.grnnum";
+        //echo "$sql1<br>";
+        $result1 = mysql_query($sql1);
+        if(!$result1) die("getallgrns4assy failed for assywo..Please report to Sysadmin. " . mysql_error());
+        return $result1;
+      }
+        
+		function getallgrns4cons($type)
+      {
+        //echo $rm_type;
+        //echo $rm_spec;
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $userid = $_SESSION['user'];
+		$to_date=date('Y-m-d');
+        $sql1 = "select  g.recnum, g.grnnum,g.batch_num, sum(gli.qty_to_make) as qtm,
+                         g.crn,g.raw_mat_type,g.raw_mat_spec,gli.partnum,gli.expdate
+                       from grn g, grn_li gli
+                       where
+                     g.recnum = gli.link2grn and
+		             g.grntype != 'Quarantined' and
+		             g.`status` != 'Closed' and
+		             g.`status` != 'Cancelled' and
+		             g.`status` != 'Pending' and
+		             (g.grntype='Consummables') and
+					 (DATEDIFF(gli.expdate,'$to_date')>0 || gli.expdate ='0000-00-00' || g.status is null)
+                       group by g.grnnum"; 
+        $result1 = mysql_query($sql1);
+        if(!$result1) die("getallgrns4cons failed for assywo..Please report to Sysadmin. " . mysql_error());
+        return $result1;
+      }
+      
+      function get_woretqty($grnnum)
+{
+         $newlogin = new userlogin;
+         $newlogin->dbconnect();
+		 $inpgrnnum = trim($grnnum);
+         $sql = "select ali.grn,sum(wps.ret)
+                       from assywo_li ali,assy_wo wo
+                       left join assy_part_status wps on ((wps.link2assywo = wo.recnum) and
+                       (wps.stage = 'final' or wps.stage = 'Final' or
+                       wps.stage = 'FINAL' or wps.stage = 'fi' or
+                       wps.stage = 'FI' or wps.stage = 'Fi'))
+                       where
+                           ali.grn = '$inpgrnnum' and ali.link2assywo=wo.recnum
+                 group by ali.grn";
+  // echo "$sql";
+        $result = mysql_query($sql);
+        if(!$result) die("Get woretqty query failed..Please report to Sysadmin. " . mysql_error());
+        return $result;
+}
+
+function getgrnli($grnrecnum) {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "select gli.linenum,
+                       gli.qty,
+                       gli.dim1,
+                       gli.dim2,
+                       gli.dim3,
+                       gli.wo_assigned,
+                       gli.qty_left,
+                       gli.recnum,
+                       gli.qty_rej,
+                       gli.qty_to_make,
+                       gli.qty4billet,
+		               gli.partnum,
+                       gli.partdesc,
+                       gli.batchnum,
+                       gli.uom,
+                       gli.expdate,
+                       gli.rmpo_linenum,
+                       gli.amendlinenum,
+                       gli.layoutrefnum,
+                       gli.amendstatus,
+                       gli.noofpieces
+                FROM grn g, grn_li gli
+                where g.recnum = $grnrecnum and
+                      g.recnum = gli.link2grn order by gli.linenum";
+       // echo $sql;
+        $result = mysql_query($sql);
+        if(!$result) die("Getgrnli query failed..Please report to Sysadmin. " . mysql_error());
+        return $result;
+     }
+     
+     
+        function getPrev_wo($crn)
+     {
+       $newlogin = new userlogin;
+       $newlogin->dbconnect();
+       $sql = "select w.assy_wonum,w.crn,w.fai
+              from assy_wo w
+                   where w.crn='$crn'
+                         order by w.recnum desc limit 1";
+        //echo $sql;
+       $result = mysql_query($sql);
+       if(!$result) die(".......get Previous wo for fair....... failed...Please report to SysAdmin. " . mysql_error());
+       return $result;
+     }
+
+     function getPrevrev_match($crn,$wonum)
+     {
+       $newlogin = new userlogin;
+       $newlogin->dbconnect();
+       $sql = "select w.link2mps,m.mps_rev,mps.mps_revision
+               from master_data m ,assy_wo w left join mps mps on (w.link2mps = mps.recnum)
+                    where w.crn = m.CIM_refnum
+                          and m.CIM_refnum = '$crn'
+                          and w.assy_wonum='$wonum'
+                          order by w.recnum desc limit 1";
+        //echo $sql;
+       $result = mysql_query($sql);
+       if(!$result) die(".......get Previous wo for fair....... failed...Please report to SysAdmin. " . mysql_error());
+       return $result;
+     }
+     
+      function getbom_assyWo_partDetails($bomnum)
+    {
+       $newlogin = new userlogin;
+       $newlogin->dbconnect();
+       $sql = "select  bom_subassy.item_no as itn,bom_subassy.partnum,bom_subassy.partname, bom_subassy.partiss,'Sub Assembly',
+                       bom_subassy.crn,bom_subassy.qpa,bom_subassy.crn_type
+                   from bom b,bom_subassy_items bom_subassy
+                    where b.bomnum = '$bomnum'
+                         and bom_subassy.link2bom=b.recnum and b.status ='Active'
+                   UNION
+                 select  bom_mfg.item_no as itn,bom_mfg.partnum,bom_mfg.partname, bom_mfg.partiss,'Manufactured',
+                       bom_mfg.crn,bom_mfg.qpa,bom_mfg.crn_type
+                   from bom b,bom_mfg_items bom_mfg
+                   where b.bomnum = '$bomnum'
+                         and bom_mfg.link2bom=b.recnum and b.status ='Active'
+                UNION
+               select  bom_bo.item_no as itn,bom_bo.partnum,bom_bo.descr, bom_bo.partiss,'Bought Out','',bom_bo.qpa,''
+                   from bom b,bom_bought_items bom_bo
+                   where b.bomnum = '$bomnum'
+                         and bom_bo.link2bom=b.recnum and b.status ='Active'
+                UNION
+               select  bom_co.item_no as itn,'',bom_co.descr,'','Consummables','',bom_co.qpa ,''
+                   from bom b,bom_consume bom_co
+                    where b.bomnum = '$bomnum'
+                         and bom_co.link2bom=b.recnum and b.status ='Active'";
+       //echo "$sql";
+       $result = mysql_query($sql);
+       return $result;
+    }
+
+} // End assywo class definition

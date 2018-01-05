@@ -1,0 +1,279 @@
+<?
+//============================================
+// Author: FSI
+// Date-written = Jan 29, 2010
+// Filename: delivery_schClass.php
+// Maintains the class for wms
+// Revision: v1.0  OMS
+//============================================
+
+include_once('classes/loginClass.php');
+
+class deliverye_sch
+{
+	 var $crnnum,
+         $schedule_date,
+         $schedule_qty,
+		 $remarks,
+		 $time_required,
+		 $status,
+		 $disputd,
+         $partnum;
+
+ function deliverye_sch()
+{
+    $this->crnnum = '';
+    $this->schedule_date = '';	
+    $this->schedule_qty = '';	
+	$this->remarks = '';
+	$this->time_required = '';
+	$this->status = '';
+	$this->disputd = '';
+	$this->partnum = '';
+}
+
+function getcrnnum()
+{
+  return $this->crnnum;
+}
+function setcrnnum($reqcrnnum)
+{
+  $this->crnnum = $reqcrnnum;
+}
+
+function getschedule_date()
+{
+  return $this->schedule_date;
+}
+function setschedule_date($reqschedule_date)
+{
+  $this->schedule_date = $reqschedule_date;
+}
+
+function getschedule_qty()
+{
+  return $this->schedule_qty;
+}
+function setschedule_qty($reqschedule_qty)
+{
+  $this->schedule_qty = $reqschedule_qty;
+}
+function getremarks()
+{
+  return $this->remarks;
+}
+function setremarks($reqremarks)
+{
+  $this->remarks = $reqremarks;
+}
+function gettime_required()
+{
+  return $this->time_required;
+}
+function settime_required($reqtime_required)
+{
+  $this->time_required = $reqtime_required;
+}
+function getstatus()
+{
+  return $this->status;
+}
+function setstatus($reqstatus)
+{
+  $this->status = $reqstatus;
+}
+function setpartnum($partnum)
+{
+  $this->partnum = $partnum;
+}
+function setdisputd($disputd)
+{
+	$this->disputd = $disputd;
+}
+function getdelivery_sch_summary($cond,$argoffset,$arglimit)
+{
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $offset = $argoffset;
+        $limit =  $arglimit;
+         $sql = "select recnum,
+					crnnum,
+					schedule_date,
+					schedule_qty,
+					remarks,
+					time_required,
+					status,
+					partnum,
+					disp_qty,
+					wo_issue_qty
+                  FROM delivery_sch
+		               $cond
+                   and schedule_qty > 0
+                  order by crnnum limit $offset,$limit";
+        $result = mysql_query($sql);
+        //echo "$sql";
+        return $result;
+}
+
+function getdelivery_schCount($cond,$argoffset,$arglimit)
+{
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $offset = $argoffset;
+        $limit =  $arglimit;
+         $sql = "select count(recnum) as numrows
+                  FROM delivery_sch
+		               $cond
+                   and schedule_qty > 0
+                  order by crnnum limit $offset,$limit";
+        $result = mysql_query($sql);
+        //echo "$sql";
+        $result  = mysql_query($sql) or die('getdelivery_schCount query failed');
+        $row     = mysql_fetch_array($result, MYSQL_ASSOC);
+        $numrows = $row['numrows'];
+       return $numrows;
+}
+
+ function adddelivery_sch()
+ {
+         $newlogin = new userlogin;
+         $newlogin->dbconnect();
+        
+        $crnnum ="'" .$this->crnnum . "'";
+		$schedule_date ="'" .$this->schedule_date . "'";
+		$schedule_qty ="'" .$this->schedule_qty . "'";
+		$remarks ="'" .$this->remarks . "'";
+		$time_required =$this->time_required?"'" .$this->time_required . "'":0.0;
+		$partnum ="'" .$this->partnum . "'";
+		$dispuptodate ="'" .$this->disputd . "'";
+		$status ='Open';
+	
+        $sql = "select * from delivery_sch 
+		        where crnnum = $crnnum and
+				      schedule_date=$schedule_date
+					  and (status = 'Open' || status='Closed')";
+		
+        $result = mysql_query($sql);
+		$num_rows=mysql_num_rows($result);			
+
+        if ($num_rows == 0) 
+		{			
+		  $sql = "INSERT INTO delivery_sch													
+               (crnnum,schedule_date,schedule_qty,remarks,time_required,status,partnum,disp_qty)
+               VALUES 
+			   ($crnnum,$schedule_date,$schedule_qty,$remarks,
+			      $time_required,'$status',$partnum,$dispuptodate)";
+	      // echo $sql;
+	    }
+	   else
+		{
+            echo "<table border=1><tr><td><font color=#FF0000>";
+            die("CRN#  " . $crnnum . " for the schedule date  ".$schedule_date."  already exists and further CRN not inserted ");
+            echo "</td></tr></table>";
+        } 
+        $result = mysql_query($sql);
+        // Test to make sure query worked
+        if(!$result) die("Insert to delivery Schedule didn't work..Please report to Sysadmin. " . mysql_error());
+  }
+
+   function Updatedelivery_sch($recnum)
+   {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();        
+        $crnnum ="'" .$this->crnnum . "'";
+			$schedule_date ="'" .$this->schedule_date . "'";
+			$schedule_qty ="'" .$this->schedule_qty . "'";
+			$remarks ="'" .$this->remarks . "'";
+			$time_required =$this->time_required ?"'" .$this->time_required . "'":0.0;
+			$partnum ="'" .$this->partnum . "'";
+			$dispuptodate ="'" .$this->disputd . "'";
+			$status ="'" .$this->status . "'";        
+		 $sql = "update delivery_sch set 		         
+				        crnnum=$crnnum,
+                        schedule_date=$schedule_date,
+                        schedule_qty=$schedule_qty,
+                        partnum=$partnum,
+                        time_required=$time_required,
+                        remarks=$remarks,
+						disp_qty = $dispuptodate
+			where recnum=$recnum";
+		//	 echo $sql;      
+		$result = mysql_query($sql);
+ 		// Test to make sure query worked
+		if(!$result) die("Update to delivery Schedule didn't work..Please report to Sysadmin. " . mysql_error());
+    }
+	function gettime_required4crn($crnnum) 
+   {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $sql = "select sum(ms.setting_time*60+ms.setting_time_mins) as SettingTime,sum(ms.running_time*60+ms.running_time_mins) as RunningTime
+		from mc_master m,mc_stage_master ms
+		 where ms.link2mc_master=m.recnum and m.crn_num='$crnnum'
+		 group by m.crn_num";
+        $result = mysql_query($sql);
+        //echo "$sql";
+        return $result;
+   }
+    function getAllSchs($crnnum)
+	{
+       $newlogin = new userlogin;
+       $newlogin->dbconnect(); 
+       $sql = "select recnum,
+	                  crnnum, 
+					  schedule_date, 
+					  schedule_qty, 
+	                  remarks, 
+					  status, 
+					  time_required,
+	                  partnum, 
+					  disp_qty,
+					  wo_issue_qty
+                      from delivery_sch
+	             where crnnum = '$crnnum' and
+					   status = 'Open' and
+                       schedule_qty - disp_qty > 0
+					 order by crnnum";
+		//echo $sql;
+        $result  = mysql_query($sql) or die('getallschs query failed');
+		return $result;
+	}
+	
+	function getdelivery_sch_dets($cond)
+    {
+        $newlogin = new userlogin;
+        $newlogin->dbconnect();
+        $offset = $argoffset;
+        $limit =  $arglimit;
+         $sql = "select recnum,
+						crnnum,
+						schedule_date,
+						schedule_qty,
+						remarks,
+						time_required,
+						status,
+						partnum,
+						disp_qty
+                  FROM delivery_sch
+		               $cond
+                  ";
+        $result = mysql_query($sql);
+        //echo "$sql";
+        return $result;
+    }
+
+	function check_schedule($crn,$schdate)
+	{
+       $newlogin = new userlogin;
+       $newlogin->dbconnect();
+       $sql = "select recnum
+			   from work_order
+               where sch_due_date='$schdate' and crn_num='$crn'
+               UNION
+               select recnum
+               from dispatch
+               where schdate='$schdate' and crn='$crn'";
+		//echo $sql;
+        $result  = mysql_query($sql) or die('check_schedule query failed');
+		return $result;
+	}
+}

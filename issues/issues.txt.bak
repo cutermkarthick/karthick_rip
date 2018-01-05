@@ -1,0 +1,42 @@
+Issues - July 22, 2017
+======================
+
+Sales Order
+-----------
+1. Sales order # duplicate check
+2. A quote already linked to a Sales Order 
+3. Order Date is mandatory
+4. Change the label of Sales Order # as "Our Sales Order #".
+5. Change the top heading from SO to Sales Order.
+6. Note - PO # is not mandatory - some companies do not link Sales Order and RM PO.
+7. Line items should have Get Part # which should pull Part #, desc, dimensions(if applicable) and price with currency and units.
+   The new columns - PArt #, Dimensions, Units, currency -  should get added.
+8. Due date is mandatory - so , we need to put an asterisk.
+9. Tax should be configurable based on a config file - this could be config.php file with IGST = 18%.
+10. 
+
+
+
+
+
+
+
+
+Future Need to add forecasting features as below
+=================================================
+RB-ERP Forecasting Key Features:
+
+    3 Year Statistical Forecast
+    Seasonality and smoothing factors
+    Safety Stock calculations based on customer service level
+    Linear regression, weighted average, percentage change methods
+    Forecast aggregation/disaggregation
+    Extract from actual usage
+    Export to Master Scheduling
+
+RB-ERP Forecasting Key Benefits:
+
+    Improve customer service
+    Increase inventory turns
+    Decrease costs
+    Become more pro-active
